@@ -23,5 +23,5 @@
         @inertia
     </body>
 
-    <script src="https://maps.google.com/maps/api/js?key=AIzaSyCMuyTDQ4zd__ZPPja86kIefxTcK2fiqVE"></script>
+    {{-- <script src="https://maps.google.com/maps/api/js?key=AIzaSyCMuyTDQ4zd__ZPPja86kIefxTcK2fiqVE"></script> --}}
 </html>

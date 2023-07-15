@@ -11,6 +11,7 @@ import BatteryFullOutlinedIcon from '@mui/icons-material/BatteryFullOutlined';
 import MonitorHeartOutlinedIcon from '@mui/icons-material/MonitorHeartOutlined';
 import DeviceThermostatOutlinedIcon from '@mui/icons-material/DeviceThermostatOutlined';
 import EmergencyShareOutlinedIcon from '@mui/icons-material/EmergencyShareOutlined';
+import gmapsLoader from '@/Libs/GmapsLoader';
 
 export default function Index({ auth }) {
     const [searchDevice, setSearchDevice] = useState('');
@@ -39,13 +40,15 @@ export default function Index({ auth }) {
     const filteredDevices = deviceList.filter((device) => device.name.toLowerCase().includes(searchDevice.toLowerCase()))
 
     useEffect(() => {
-        const map = new gmaps({
-            el: '#map',
-            lat: 1.1134006,
-            lng: 104.0652815,
-            zoom: 12,
-            disableDefaultUI: true,
-        });
+        gmapsLoader.load().then(() => {
+            const map = new gmaps({
+                el: '#map',
+                lat: 1.1134006,
+                lng: 104.0652815,
+                zoom: 12,
+                disableDefaultUI: true,
+            });
+        })
     }, []);
 
     return (
