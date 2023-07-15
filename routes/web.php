@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DeviceContnoller;
 use App\Http\Controllers\ProfileController;
 use App\Models\Device;
 use Illuminate\Foundation\Application;
@@ -30,11 +31,8 @@ Route::get('/', function () {
     return Inertia::render('Tracking/Index');
 })->middleware(['auth', 'verified'])->name('tracking');
 
-Route::get('/devices', function () {
-    $devices = Device::query()
-        ->paginate(10);
-    return Inertia::render('Device/Index', ['devices' => $devices]);
-})->middleware(['auth', 'verified'])->name('devices');
+Route::get('/devices', [DeviceContnoller::class, 'index'])->middleware(['auth', 'verified'])->name('devices');
+Route::post('/devices', [DeviceContnoller::class, 'store'])->middleware(['auth', 'verified'])->name('device.store');
 
 Route::get('/messages', function () {
     return Inertia::render('Message/Index');

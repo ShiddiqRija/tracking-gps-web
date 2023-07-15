@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Device;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -21,6 +22,12 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        Device::factory(50)->create();
+        User::create([
+            'name'      => 'Administrator',
+            'email'     => 'admin@tracking.com',
+            'password'  => bcrypt('password')
+        ]);
+
+        // Device::factory(50)->create();
     }
 }
