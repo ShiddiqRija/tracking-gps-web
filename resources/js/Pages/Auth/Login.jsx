@@ -78,7 +78,7 @@ export default function Login({ status, canResetPassword }) {
                 </div>
 
                 <div className="flex items-center justify-end mt-4">
-                    <Button fullWidth disabled={processing}>Login</Button>
+                    <Button fullWidth type='submit' disabled={processing}>Login</Button>
                 </div>
             </form>
         </GuestLayout>
