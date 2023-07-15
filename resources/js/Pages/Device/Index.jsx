@@ -10,6 +10,9 @@ import InputLabel from "@/Components/Atom/InputLabel";
 import TextInput from "@/Components/Atom/TextInput";
 import InputError from "@/Components/Atom/InputError";
 
+import AutoFixHighOutlinedIcon from '@mui/icons-material/AutoFixHighOutlined';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+
 export default function Index({ auth }) {
     const { devices } = usePage().props;
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,14 +34,6 @@ export default function Index({ auth }) {
 
         reset();
     };
-
-    // const store = (e) => {
-    //     return post(route('device.store'), {
-    //         onSuccess: () => closeModal(),
-    //         onError: () => closeModal(),
-    //         onFinish: () => reset(),
-    //     })
-    // }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -67,7 +62,7 @@ export default function Index({ auth }) {
                     <Button primary onClick={addDevice}>+ Add Device</Button>
                 </div>
 
-                <Modal show={isModalOpen} onClose={closeModal}>
+                <Modal show={isModalOpen} maxWidth="sm" onClose={closeModal}>
                     <form onSubmit={handleSubmit} className="p-6">
                         <h2 className="text-lg font-medium text-gray-900">
                             Add Device
@@ -182,11 +177,14 @@ export default function Index({ auth }) {
 
                                         }
                                     </td>
-                                    <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">{device.phone}</td>
-                                    <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">{device.contact}</td>
+                                    <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">{device.phone ? device.phone : '-'}</td>
+                                    <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">{device.contact ? device.contact : '-'}</td>
                                     <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">0</td>
                                     <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">0</td>
-                                    <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">0</td>
+                                    <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                        <button type="button" className="text-sky-600 text-opacity-50 hover:text-opacity-100 cursor-pointer mr-4"><AutoFixHighOutlinedIcon /></button>
+                                        <button type="button" className="text-rose-600 text-opacity-50 hover:text-opacity-100 cursor-pointer "><DeleteOutlinedIcon /></button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

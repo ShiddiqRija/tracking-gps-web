@@ -7,7 +7,7 @@ export default function NavLink({ active = false, className = '', children, titl
             className={
                 'group flex gap-x-3 rounded-md p-3 text-sm leading-6 font-semibold items-center hover:text-black hover:bg-blue-200 ' +
                 (active
-                    ? 'text-blue-600 '
+                    ? 'text-blue-500 '
                     : 'text-gray-500 ') +
                 className
             }
