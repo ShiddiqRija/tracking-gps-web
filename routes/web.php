@@ -33,6 +33,8 @@ Route::get('/', function () {
 
 Route::get('/devices', [DeviceContnoller::class, 'index'])->middleware(['auth', 'verified'])->name('devices');
 Route::post('/devices', [DeviceContnoller::class, 'store'])->middleware(['auth', 'verified'])->name('device.store');
+Route::get('/device/{device}/edit', [DeviceContnoller::class, 'edit'])->middleware(['auth', 'verified'])->name('device.edit');
+Route::put('/device/{device}', [DeviceContnoller::class, 'update'])->middleware(['auth', 'verified'])->name('device.update');
 
 Route::get('/messages', function () {
     return Inertia::render('Message/Index');

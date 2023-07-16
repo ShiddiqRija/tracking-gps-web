@@ -33,4 +33,20 @@ class DeviceContnoller extends Controller
 
         return Redirect::route('devices');
     }
+
+    public function edit(Device $device)
+    {
+        return response()->json($device);
+    }
+
+    public function update(Request $request, Device $device)
+    {
+        DB::beginTransaction();
+
+        $device->update($request->all());
+
+        DB::commit();
+
+        return Redirect::route('devices');
+    }
 }

@@ -12,12 +12,15 @@ import InputError from "@/Components/Atom/InputError";
 
 import AutoFixHighOutlinedIcon from '@mui/icons-material/AutoFixHighOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import axios from "axios";
 
 export default function Index({ auth }) {
     const { devices } = usePage().props;
+    const [modalTitle, setModalTitle] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const { data, setData, post, put, processing, errors, reset } = useForm({
+        id: '',
         name: '',
         unique_id: '',
         contact: '',
@@ -26,8 +29,24 @@ export default function Index({ auth }) {
     });
 
     const addDevice = () => {
+        setModalTitle('Add Device');
         setIsModalOpen(true);
     };
+
+    const updateDevice = async (id) => {
+        const { data } = await axios.get(route('device.edit', { id: id }))
+
+        setData({
+            id: id,
+            name: data.name,
+            unique_id: data.unique_id,
+            contact: data.contact,
+            phone: data.phone,
+            group_id: 0,
+        })
+        setModalTitle('Edit Device');
+        setIsModalOpen(true);
+    }
 
     const closeModal = () => {
         setIsModalOpen(false);
@@ -37,16 +56,30 @@ export default function Index({ auth }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        post(route('device.store'), {
-            preserveScroll: true,
-            onProgress: () => toast.loading('Saving...'),
-            onSuccess: () => {
-                toast.success('Device saved!');
-                closeModal();
-            },
-            onError: () => toast.error('Could not save.'),
-            onFinish: () => reset()
-        })
+
+        if (data.id == '') {
+            post(route('device.store'), {
+                preserveScroll: true,
+                onProgress: () => toast.loading('Saving...'),
+                onSuccess: () => {
+                    toast.success('Device saved!');
+                    closeModal();
+                },
+                onError: () => toast.error('Could not save.'),
+                onFinish: () => reset()
+            })
+        } else {
+            put(route('device.update', {id: data.id}), {
+                preserveScroll: true,
+                onProgress: () => toast.loading('Updating...'),
+                onSuccess: () => {
+                    toast.success('Device updated!');
+                    closeModal();
+                },
+                onError: () => toast.error('Could not update.'),
+                onFinish: () => reset()
+            })
+        }
     }
 
     return (
@@ -65,7 +98,7 @@ export default function Index({ auth }) {
                 <Modal show={isModalOpen} maxWidth="sm" onClose={closeModal}>
                     <form onSubmit={handleSubmit} className="p-6">
                         <h2 className="text-lg font-medium text-gray-900">
-                            Add Device
+                            {modalTitle}
                         </h2>
 
                         <div className="mt-4">
@@ -182,7 +215,13 @@ export default function Index({ auth }) {
                                     <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">0</td>
                                     <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">0</td>
                                     <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
-                                        <button type="button" className="text-sky-600 text-opacity-50 hover:text-opacity-100 cursor-pointer mr-4"><AutoFixHighOutlinedIcon /></button>
+                                        <button
+                                            type="button"
+                                            className="text-sky-600 text-opacity-50 hover:text-opacity-100 cursor-pointer mr-4"
+                                            onClick={() => updateDevice(device.id)}
+                                        >
+                                            <AutoFixHighOutlinedIcon />
+                                        </button>
                                         <button type="button" className="text-rose-600 text-opacity-50 hover:text-opacity-100 cursor-pointer "><DeleteOutlinedIcon /></button>
                                     </td>
                                 </tr>
