@@ -13,7 +13,7 @@ import InputError from "@/Components/Atom/InputError";
 import AutoFixHighOutlinedIcon from '@mui/icons-material/AutoFixHighOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import axios from "axios";
-import { Pagination, PaginationItem } from "@mui/material";
+import { Pagination } from "@mui/material";
 
 export default function Index({ auth }) {
     const { devices } = usePage().props;
@@ -37,7 +37,7 @@ export default function Index({ auth }) {
     };
 
     const updateDevice = async (id) => {
-        const { data } = await axios.get(route('device.edit', { id: id }))
+        const { data } = await axios.get(route('devices.edit', { id: id }))
 
         setData({
             id: id,
@@ -61,7 +61,7 @@ export default function Index({ auth }) {
         e.preventDefault();
 
         if (data.id == '') {
-            post(route('device.store'), {
+            post(route('devices.store'), {
                 preserveScroll: true,
                 onProgress: () => toast.loading('Saving...'),
                 onSuccess: () => {
@@ -72,7 +72,7 @@ export default function Index({ auth }) {
                 onFinish: () => reset()
             })
         } else {
-            put(route('device.update', { id: data.id }), {
+            put(route('devices.update', { id: data.id }), {
                 preserveScroll: true,
                 onProgress: () => toast.loading('Updating...'),
                 onSuccess: () => {
@@ -173,6 +173,24 @@ export default function Index({ auth }) {
                 </Modal>
 
                 <div className="block w-full bg-white rounded-t-lg px-4 py-4">
+                    <div className="flex justify-end">
+                        <TextInput
+                            id="search"
+                            name="search"
+                            onChange={(e) => {
+                                e.preventDefault();
+
+                                router.visit(route(route().current(),
+                                    { search: e.target.value }),
+                                    {
+                                        preserveState: true,
+                                        replace: true,
+                                    });
+                            }}
+                            className="mb-2 block w-60"
+                            placeholder="Search..."
+                        />
+                    </div>
                     <table className="table-fixed min-w-full border border-gray-300 divide-y divide-gray-200">
                         <thead>
                             <tr>
@@ -240,7 +258,13 @@ export default function Index({ auth }) {
                             page={devices.current_page}
                             onChange={(event, page) => {
                                 event.preventDefault();
-                                router.visit(route('devices.index', { page }));
+
+                                router.visit(route(route().current(),
+                                    { page }),
+                                    {
+                                        preserveState: true,
+                                        replace: true,
+                                    });
                             }}
                         />
 

@@ -4,19 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DeviceRequest;
 use App\Models\Device;
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
 class DeviceContnoller extends Controller
 {
     public function index()
     {
-        $devices = Device::query()
-            ->paginate(10);
-
-        return Inertia::render('Device/Index', ['devices' => $devices]);
+        return Inertia::render('Device/Index', [
+            // 'filters' => Request::all('search'),
+            'devices' => Device::query()
+                ->filter(Request::only('search'))
+                ->paginate(10)
+        ]);
     }
 
     public function store(DeviceRequest $request)
@@ -31,7 +34,7 @@ class DeviceContnoller extends Controller
 
         DB::commit();
 
-        return Redirect::route('devices');
+        return Redirect::route('devices.index');
     }
 
     public function edit(Device $device)
@@ -39,7 +42,7 @@ class DeviceContnoller extends Controller
         return response()->json($device);
     }
 
-    public function update(Request $request, Device $device)
+    public function update(DeviceRequest $request, Device $device)
     {
         DB::beginTransaction();
 
@@ -47,6 +50,6 @@ class DeviceContnoller extends Controller
 
         DB::commit();
 
-        return Redirect::route('devices');
+        return Redirect::route('devices.index');
     }
 }

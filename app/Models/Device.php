@@ -24,4 +24,15 @@ class Device extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? null, function($query, $search) {
+            $query->where('name', 'like', "%{$search}%")
+            ->orWhere('unique_id', 'like', "%{$search}%")
+            ->orWhere('status', 'like', "%{$search}%")
+            ->orWhere('phone', 'like', "%{$search}%")
+            ->orWhere('contact', 'like', "%{$search}%");
+        });
+    }
 }
