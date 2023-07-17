@@ -20,8 +20,6 @@ export default function Index({ auth }) {
     const [modalTitle, setModalTitle] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    console.log(devices)
-
     const { data, setData, post, put, processing, errors, reset } = useForm({
         id: '',
         name: '',
@@ -206,7 +204,7 @@ export default function Index({ auth }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {devices.data.map((device) => (
+                            {devices.data.map((device, index) => (
                                 <tr key={device.id}>
                                     <td className="px-4 py-2 text-sm text-gray-500 whitespace-nowrap">{device.id}</td>
                                     <td className="px-4 py-2 text-sm text-gray-500 whitespace-nowrap">{device.name}</td>
@@ -247,6 +245,13 @@ export default function Index({ auth }) {
                                     </td>
                                 </tr>
                             ))}
+                            {devices.data.length === 0 && (
+                                <tr>
+                                    <td className="px-4 py-2 text-s text-center text-gray-500 whitespace-nowrap" colSpan="9">
+                                        No device found.
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
 
