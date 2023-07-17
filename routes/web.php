@@ -31,18 +31,13 @@ Route::get('/', function () {
     return Inertia::render('Tracking/Index');
 })->middleware(['auth', 'verified'])->name('tracking');
 
-Route::get('/devices', [DeviceContnoller::class, 'index'])->middleware(['auth', 'verified'])->name('devices');
-Route::post('/devices', [DeviceContnoller::class, 'store'])->middleware(['auth', 'verified'])->name('device.store');
-Route::get('/device/{device}/edit', [DeviceContnoller::class, 'edit'])->middleware(['auth', 'verified'])->name('device.edit');
-Route::put('/device/{device}', [DeviceContnoller::class, 'update'])->middleware(['auth', 'verified'])->name('device.update');
+route::resource('devices', DeviceContnoller::class)
+    ->only(['index', 'store', 'edit', 'update'])
+    ->middleware(['auth', 'verified']);
 
 Route::get('/messages', function () {
     return Inertia::render('Message/Index');
 })->middleware(['auth', 'verified'])->name('messages');
-
-// Route::get('/dashboard', function () {
-//     return Inertia::render('Dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

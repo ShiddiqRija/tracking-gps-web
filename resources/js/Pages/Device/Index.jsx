@@ -240,7 +240,7 @@ export default function Index({ auth }) {
                             page={devices.current_page}
                             onChange={(event, page) => {
                                 event.preventDefault();
-                                router.visit(route('devices', { page }));
+                                router.visit(route('devices.index', { page }));
                             }}
                         />
 

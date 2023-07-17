@@ -38,8 +38,8 @@ export default function Authenticated({ user, header, children }) {
                         </li>
                         <li>
                             <NavLink 
-                                href={route('devices')} 
-                                active={route().current('devices')} 
+                                href={route('devices.index')} 
+                                active={route().current('devices.index')} 
                                 title='Devices'
                             >
                                 <WatchOutlinedIcon />
