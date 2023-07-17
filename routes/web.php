@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DeviceContnoller;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Device;
 use Illuminate\Foundation\Application;
@@ -31,13 +32,17 @@ Route::get('/', function () {
     return Inertia::render('Tracking/Index');
 })->middleware(['auth', 'verified'])->name('tracking');
 
-route::resource('devices', DeviceContnoller::class)
+Route::resource('devices', DeviceContnoller::class)
     ->only(['index', 'store', 'edit', 'update'])
     ->middleware(['auth', 'verified']);
 
-Route::get('/messages', function () {
-    return Inertia::render('Message/Index');
-})->middleware(['auth', 'verified'])->name('messages');
+Route::resource('messages', MessageController::class)
+    ->only(['index', 'store'])
+    ->middleware(['auth', 'verified']);
+
+// Route::get('/messages', function () {
+//     return Inertia::render('Message/Index');
+// })->middleware(['auth', 'verified'])->name('messages');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

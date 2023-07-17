@@ -47,8 +47,8 @@ export default function Authenticated({ user, header, children }) {
                         </li>
                         <li>
                             <NavLink 
-                                href={route('messages')} 
-                                active={route().current('messages')} 
+                                href={route('messages.index')} 
+                                active={route().current('messages.index')} 
                                 title='Messages'
                             >
                                 <ChatBubbleOutlineOutlinedIcon />
