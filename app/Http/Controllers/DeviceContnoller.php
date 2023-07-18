@@ -52,4 +52,15 @@ class DeviceContnoller extends Controller
 
         return Redirect::route('devices.index');
     }
+
+    public function destroy(Device $device)
+    {
+        DB::beginTransaction();
+
+        $device->delete();
+
+        DB::commit();
+
+        return Redirect::route('devices.index');
+    }
 }
