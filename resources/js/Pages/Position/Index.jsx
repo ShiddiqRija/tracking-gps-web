@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import TextInput from '@/Components/Atom/TextInput';
@@ -14,41 +14,56 @@ import EmergencyShareOutlinedIcon from '@mui/icons-material/EmergencyShareOutlin
 import gmapsLoader from '@/Libs/GmapsLoader';
 
 export default function Index({ auth }) {
+    const { positions } = usePage().props;
+    const [map, setMap] = useState();
+    const [marker, setMarker] = useState([]);
     const [searchDevice, setSearchDevice] = useState('');
 
     const handleSearch = (value) => {
         setSearchDevice(value);
     }
 
-    const deviceList = [
-        {
-            id: 1,
-            name: 'Device Name 1',
-            battery: '90',
-            heartRate: 0,
-            temperature: 0,
-        },
-        {
-            id: 2,
-            name: 'Device Name 2',
-            battery: '75',
-            heartRate: 1,
-            temperature: 1,
-        },
-    ]
+    const filteredDevices = positions.data.filter((device) => device.name.toLowerCase().includes(searchDevice.toLowerCase()));
 
-    const filteredDevices = deviceList.filter((device) => device.name.toLowerCase().includes(searchDevice.toLowerCase()))
+    const mapInit = () => {
+        const map = new gmaps({
+            el: '#map',
+            lat: -6.1754,
+            lng: 106.8272
+        });
+
+        setMap(map);
+        return map;
+    }
+
+    const positionList = () => {
+        const data = [];
+        positions.data.map((device) => {
+            if (device.position != null) {
+                data.push({
+                    lat: device.position.latitude,
+                    lng: device.position.longitude,
+                    title: device.name,
+                })
+            }
+        });
+
+        setMarker(data);
+        return data;
+    }
+
+    const markerInit = (map, marker) => {
+        map.addMarkers(marker);
+        console.log(marker);
+    }
 
     useEffect(() => {
         gmapsLoader.load().then(() => {
-            const map = new gmaps({
-                el: '#map',
-                lat: 1.1134006,
-                lng: 104.0652815,
-                zoom: 12,
-                disableDefaultUI: true,
-            });
-        })
+            const map = mapInit();
+            const dataInit = positionList();
+
+            markerInit(map, dataInit);
+        });
     }, []);
 
     return (
@@ -85,15 +100,15 @@ export default function Index({ auth }) {
                                         {device.name}
                                     </div>
                                     <div className="flex">
-                                        <BatteryFullOutlinedIcon /> {device.battery}%
+                                        <BatteryFullOutlinedIcon /> {device.position == null ? '0' : device.position.attributes.battery_level}%
                                     </div>
                                 </div>
                                 <div className="flex py-1 justify-between items-center ring-sky-600">
                                     <div className="flex items-center">
-                                        <MonitorHeartOutlinedIcon className='mr-2' /> {device.heartRate} <DeviceThermostatOutlinedIcon className='ml-2' /> {device.temperature}
+                                        <MonitorHeartOutlinedIcon className='mr-2' /> {device.position == null ? '0' : device.position.attributes.heart_rate} <DeviceThermostatOutlinedIcon className='ml-2' /> {device.position == null ? '0' : device.position.attributes.weather_temp}
                                     </div>
                                     <div>
-                                        <EmergencyShareOutlinedIcon className='text-rose-500' />
+                                        {device.position == null ? '' : device.position.attributes.alarm == 'sos' ? <EmergencyShareOutlinedIcon className='text-rose-500' /> : ''}
                                     </div>
                                 </div>
                             </li>

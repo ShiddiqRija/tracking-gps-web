@@ -29,8 +29,8 @@ export default function Authenticated({ user, header, children }) {
                     <ul role="list" className="flex flex-col items-center space-y-1 mt-4">
                         <li>
                             <NavLink 
-                                href={route('tracking')} 
-                                active={route().current('tracking')} 
+                                href={route('positions.index')} 
+                                active={route().current('positions.index')} 
                                 title='Tracking'
                             >
                                 <PinDropOutlinedIcon />

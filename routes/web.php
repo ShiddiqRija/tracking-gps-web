@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DeviceContnoller;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Device;
 use Illuminate\Foundation\Application;
@@ -28,9 +29,7 @@ use Inertia\Inertia;
 //     ]);
 // });
 
-Route::get('/', function () {
-    return Inertia::render('Tracking/Index');
-})->middleware(['auth', 'verified'])->name('tracking');
+Route::get('/', [PositionController::class, 'index'])->middleware(['auth', 'verified'])->name('positions.index');
 
 Route::resource('devices', DeviceContnoller::class)
     ->only(['index', 'store', 'edit', 'update'])
