@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DeviceRequest;
 use App\Models\Device;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -91,5 +92,66 @@ class DeviceContnoller extends Controller
                 'message' => 'Failed to update device status'
             ]);
         }
+    }
+
+    public function storeServer($data)
+    {
+        $client = new Client();
+
+        $res = $client->request('POST', env('GPS_SERVER') . '/api/devices', [
+            'auth' => [
+                env('GPS_USER_EMAIL'), env('GPS_USER_PASSWORD')
+            ],
+            'headers' => [
+                'Content-Type'  => 'application/json'
+            ],
+            'body' => json_encode([
+                'name'      => $data['name'],
+                'uniqueId'  => $data['unique_id'],
+                'status'    => $data['status'],
+                'groupId'   => $data['group_id'],
+                'phone'     => $data['phone'],
+                'contact'   => $data['contact'],
+            ])
+        ]);
+
+        return $res;
+    }
+
+    public function updateServer($request, $device)
+    {
+        $client = new Client();
+
+        $res = $client->request('PUT', env('GPS_SERVER') . "/api/devices/$device->device_id", [
+            'auth' => [
+                env('GPS_USER_EMAIL'), env('GPS_USER_PASSWORD')
+            ],
+            'headers' => [
+                'Content-Type'  => 'application/json'
+            ],
+            'body' => json_encode([
+                'id'        => $device->device_id,
+                'name'      => $request->name,
+                'uniqueId'  => $request->unique_id,
+                'groupId'   => $request->groupId,
+                'phone'     => $request->phone,
+                'contact'   => $request->contact,
+            ])
+        ]);
+
+        return $res;
+    }
+
+    public function destroyServer($id)
+    {
+        $client = new Client();
+
+        $res = $client->request('DELETE', env('GPS_SERVER') . "/api/devices/$id", [
+            'auth' => [
+                env('GPS_USER_EMAIL'), env('GPS_USER_PASSWORD')
+            ]
+        ]);
+
+        return $res;
     }
 }
