@@ -66,7 +66,10 @@ export default function Index({ auth }) {
                     toast.success('Device saved!');
                     closeModal();
                 },
-                onError: () => toast.error('Could not save.'),
+                onError: () => {
+                    toast.error('Could not save.');
+                    console.log(errors);
+                },
                 onFinish: () => reset()
             })
         } else {

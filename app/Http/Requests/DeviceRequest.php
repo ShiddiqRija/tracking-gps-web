@@ -26,6 +26,7 @@ class DeviceRequest extends FormRequest
             'unique_id' => ['required', 'string'],
             'contact' => ['nullable', 'string'],
             'phone' => ['nullable', 'string'],
+            'group_id' => ['nullable']
         ];
     }
 }

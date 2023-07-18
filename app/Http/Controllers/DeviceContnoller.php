@@ -25,17 +25,32 @@ class DeviceContnoller extends Controller
 
     public function store(DeviceRequest $request)
     {
-        $validation = $request->validated();
-        $validation['status'] = 'offline';
-        $validation['created_by'] = 1;
+        try {
+            $validation = $request->validated();
+            $validation['status'] = 'offline';
+            $validation['created_by'] = auth()->user()->id;
 
-        DB::beginTransaction();
+            $storeToServer = $this->storeServer($validation);
 
-        Device::create($validation);
+            $validation['device_id']    = json_decode($storeToServer->getBody()->getContents())->id;
+            $status                     = json_decode($storeToServer->getStatusCode());
+            
+            if ($status == 200) {
+                DB::beginTransaction();
+        
+                Device::create($validation);
+        
+                DB::commit();
+            }
 
-        DB::commit();
+            return Redirect::route('devices.index');
+        } catch (\Exception $err) {
+            DB::rollBack();
 
-        return Redirect::route('devices.index');
+            return Redirect::back()->withErrors(['error' => $err->getMessage()]);
+        }
+
+
     }
 
     public function edit(Device $device)
@@ -43,26 +58,49 @@ class DeviceContnoller extends Controller
         return response()->json($device);
     }
 
-    public function update(DeviceRequest $request, Device $device)
+    public function update(HttpRequest $request, Device $device)
     {
-        DB::beginTransaction();
+        try {
+            $updateToServer = $this->updateServer($request, $device);
+            $status = json_decode($updateToServer->getStatusCode());
 
-        $device->update($request->all());
+            if ($status == 200) {
+                DB::beginTransaction();
+        
+                $device->update($request->all());
+        
+                DB::commit();
+        
+                return Redirect::route('devices.index');
+            }
+        } catch (\Exception $err) {
+            DB::rollBack();
 
-        DB::commit();
-
-        return Redirect::route('devices.index');
+            return Redirect::back()->withErrors(['error' => $err->getMessage()]);
+        }
     }
 
     public function destroy(Device $device)
     {
-        DB::beginTransaction();
+        try {
+            $deleteFromServer = $this->destroyServer($device->device_id);
+            $status = json_decode($deleteFromServer->getStatusCode());
 
-        $device->delete();
+            if ($status == 204) {
+                DB::beginTransaction();
+        
+                $device->delete();
+        
+                DB::commit();
+                
+                return Redirect::route('devices.index');
+            }
+        } catch (\Exception $err) {
+            DB::rollBack();
 
-        DB::commit();
+            return Redirect::back()->withErrors(['error' => $err->getMessage()]);
+        }
 
-        return Redirect::route('devices.index');
     }
 
     public function status(HttpRequest $request)
@@ -133,7 +171,7 @@ class DeviceContnoller extends Controller
                 'id'        => $device->device_id,
                 'name'      => $request->name,
                 'uniqueId'  => $request->unique_id,
-                'groupId'   => $request->groupId,
+                'groupId'   => $request->group_id,
                 'phone'     => $request->phone,
                 'contact'   => $request->contact,
             ])
