@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\DeviceUpdateEvent;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PositionController;
@@ -38,6 +39,10 @@ Route::resource('devices', DeviceController::class)
 Route::resource('messages', MessageController::class)
     ->only(['index', 'store'])
     ->middleware(['auth', 'verified']);
+
+Route::get('/testing', function () {
+    broadcast(new DeviceUpdateEvent);
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -12,6 +12,7 @@ import MonitorHeartOutlinedIcon from '@mui/icons-material/MonitorHeartOutlined';
 import DeviceThermostatOutlinedIcon from '@mui/icons-material/DeviceThermostatOutlined';
 import EmergencyShareOutlinedIcon from '@mui/icons-material/EmergencyShareOutlined';
 import gmapsLoader from '@/Libs/GmapsLoader';
+// import EchoLaravel from '@/Libs/PusherEcho';
 
 export default function Index({ auth }) {
     const { positions } = usePage().props;
@@ -63,6 +64,11 @@ export default function Index({ auth }) {
             const dataInit = positionList();
 
             markerInit(map, dataInit);
+        });
+
+        const channel = Echo.channel('device-update');
+        channel.listen('DeviceUpdateEvent', function() {
+            console.log('Update');
         });
     }, []);
 
