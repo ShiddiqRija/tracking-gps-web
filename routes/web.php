@@ -1,11 +1,11 @@
 <?php
 
-use App\Events\DeviceUpdateEvent;
+use App\Events\DeviceNotificationEvent;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Device;
+use Carbon\Carbon;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -41,7 +41,11 @@ Route::resource('messages', MessageController::class)
     ->middleware(['auth', 'verified']);
 
 Route::get('/testing', function () {
-    broadcast(new DeviceUpdateEvent);
+    $data = [
+        'name' => 'Device Test',
+        'date' => Carbon::now()
+    ];
+    broadcast(new DeviceNotificationEvent($data));
 });
 
 Route::middleware('auth')->group(function () {

@@ -9,9 +9,37 @@ import PinDropOutlinedIcon from '@mui/icons-material/PinDropOutlined';
 import WatchOutlinedIcon from '@mui/icons-material/WatchOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
+import Notification from '@/Components/Notification';
+import { useEffect } from 'react';
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+    const [notification, setNotification] = useState([]);
+
+    const openNotification = () => {
+        setIsNotificationOpen(true);
+    }
+
+    const closeNotification = () => {
+        setIsNotificationOpen(false);
+    }
+
+    useEffect(() => {
+        const data = { name: 'Device Name', date: 'Date' };
+
+        const interval = setInterval(() => {
+            setNotification(prevNotification => [...prevNotification, data]);
+        }, 2000);
+
+        return () => clearInterval(interval);
+
+        // const channel = Echo.channel('device-notification');
+        // channel.listen('DeviceNotificationEvent', function (data) {
+        // console.log(data.data);
+        // setNotification(prevNotification => [...prevNotification, data])
+        // });
+    }, [])
 
     return (
         <>
@@ -28,27 +56,27 @@ export default function Authenticated({ user, header, children }) {
                     </div>
                     <ul role="list" className="flex flex-col items-center space-y-1 mt-4">
                         <li>
-                            <NavLink 
-                                href={route('positions.index')} 
-                                active={route().current('positions.index')} 
+                            <NavLink
+                                href={route('positions.index')}
+                                active={route().current('positions.index')}
                                 title='Tracking'
                             >
                                 <PinDropOutlinedIcon />
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink 
-                                href={route('devices.index')} 
-                                active={route().current('devices.index')} 
+                            <NavLink
+                                href={route('devices.index')}
+                                active={route().current('devices.index')}
                                 title='Devices'
                             >
                                 <WatchOutlinedIcon />
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink 
-                                href={route('messages.index')} 
-                                active={route().current('messages.index')} 
+                            <NavLink
+                                href={route('messages.index')}
+                                active={route().current('messages.index')}
                                 title='Messages'
                             >
                                 <ChatBubbleOutlineOutlinedIcon />
@@ -59,7 +87,7 @@ export default function Authenticated({ user, header, children }) {
                 <nav className="mt-4 flex flex-col justify-between items-center">
                     <ul role="list" className="flex flex-col items-center space-y-1 mb-4">
                         <li>
-                            <span id="notification-cover" className="cursor-pointer group flex gap-x-3 rounded-md p-3 text-sm leading-6 font-semibold items-center hover:text-black hover:bg-blue-200 text-gray-500 ">
+                            <span onClick={openNotification} className="cursor-pointer group flex gap-x-3 rounded-md p-3 text-sm leading-6 font-semibold items-center hover:text-black hover:bg-blue-200 text-gray-500 ">
                                 <NotificationsNoneOutlinedIcon />
                                 <span className="absolute left-48 bg-white font-semibold whitespace-pre text-gray-800 rounded-md drop-shadow-lg w-0 px-0 py-0 overflow-hidden group-hover:px-2 group-hover:py-1 group-hover:left-24 group-hover:duration-300 group-hover:w-fit">Notification</span>
                             </span >
@@ -83,6 +111,29 @@ export default function Authenticated({ user, header, children }) {
                     </div>
                 </nav>
             </div>
+
+            <Notification show={isNotificationOpen} onClose={closeNotification}>
+                <h2 className="px-4 py-4 font-semibold border-b-[1px]">
+                    Notification
+                </h2>
+
+                <ul role="list" className="py-1 mt-3">
+                    {notification.map((item, index) => (
+                        <li key={index} className="px-4 py-2 border-y cursor-pointer hover:bg-gray-100">
+                            <div className="flex">
+                                <div className="font-semibold">
+                                    {item.name}
+                                </div>
+                            </div>
+                            <div className="flex py-1">
+                                <div className="font-light text-gray-600 text-sm">
+                                    {item.date}
+                                </div>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            </Notification>
 
             <div className="hidden lg:block lg:pl-20 h-screen">
                 {children}
