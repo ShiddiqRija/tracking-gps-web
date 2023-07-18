@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
-class DeviceContnoller extends Controller
+class DeviceController extends Controller
 {
     public function index()
     {

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\DeviceContnoller;
+use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProfileController;
@@ -31,7 +31,7 @@ use Inertia\Inertia;
 
 Route::get('/', [PositionController::class, 'index'])->middleware(['auth', 'verified'])->name('positions.index');
 
-Route::resource('devices', DeviceContnoller::class)
+Route::resource('devices', DeviceController::class)
     ->only(['index', 'store', 'edit', 'update'])
     ->middleware(['auth', 'verified']);
 
