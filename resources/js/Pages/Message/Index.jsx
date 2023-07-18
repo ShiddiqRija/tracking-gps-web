@@ -11,11 +11,9 @@ import TextInput from "@/Components/Atom/TextInput";
 import { Pagination } from "@mui/material";
 
 export default function Index({ auth }) {
-    const { messages } = usePage().props;
+    const { messages, devices } = usePage().props;
     const [modalTitle, setModalTitle] = useState('')
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    console.log(messages.data);
 
     const { data, setData, post, processing, errors, reset } = useForm({
         device_id: '',
@@ -73,9 +71,12 @@ export default function Index({ auth }) {
                             <select
                                 id="device_id"
                                 name="device_id"
+                                className="form-input rounded-md border-0 py-1.5 text-gray-900 shadow-md ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6 mt-1 block w-full"
+                                onChange={(e) => setData('device_id', e.target.value)}
                             >
-                                <option value="1">Device 1</option>
-                                <option value="2">Device 2</option>
+                                {devices.map((device) => (
+                                    <option key={device.id} value={device.device_id}>{device.name}</option>
+                                ))}
                             </select>
 
                             <InputError message={errors.device_id} className="mt-2" />
@@ -89,6 +90,8 @@ export default function Index({ auth }) {
                                 name="message"
                                 value={data.message}
                                 onChange={(e) => setData('message', e.target.value)}
+                                className="form-input rounded-md border-0 py-1.5 text-gray-900 shadow-md ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6 mt-1 block w-full"
+                                rows="7"
                                 placeholder="Your Message"
                             >
 
@@ -135,8 +138,8 @@ export default function Index({ auth }) {
                         </thead>
                         <tbody>
                             {messages.data.map((message, index) => (
-                                <tr key={index}>
-                                    <td className="px-4 py-2 text-sm text-gray-500 whitespace-nowrap">{index}</td>
+                                <tr key={message.id}>
+                                    <td className="px-4 py-2 text-sm text-gray-500 whitespace-nowrap">{message.id}</td>
                                     <td className="px-4 py-2 text-sm text-gray-500 whitespace-nowrap">{message.device_id}</td>
                                     <td className="px-4 py-2 text-sm text-gray-500 whitespace-nowrap">{message.unique_id}</td>
                                     <td className="px-4 py-2 text-sm text-gray-500 whitespace-nowrap">{message.message}</td>

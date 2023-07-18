@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MessageRequest;
+use App\Models\Device;
 use App\Models\Message;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -15,6 +16,7 @@ class MessageController extends Controller
     public function index()
     {
         return Inertia::render('Message/Index', [
+            'devices' => Device::all(),
             'messages' => Message::query()
                 ->filter(Request::only('search'))
                 ->paginate(10)
@@ -24,7 +26,9 @@ class MessageController extends Controller
     public function store(MessageRequest $request)
     {
         $validation = $request->validated();
-        $validation['created_by'] = auth()->user()->id;
+        $validation['unique_id']    = Device::where('device_id', $validation['device_id'])->first()->unique_id;
+        $validation['send_time']    = round(microtime(true) * 1000);
+        $validation['created_by']   = auth()->user()->id;
 
         DB::beginTransaction();
 
