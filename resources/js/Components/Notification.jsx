@@ -47,7 +47,7 @@ export default function Notification({ children, show = false, maxWidth = '2xl',
                 >
                     <Dialog.Panel
                         // className={`mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto ${maxWidthClass}`}
-                        className={`h-screen bg-white w-2/12 border-r-[1px]`}
+                        className={`h-screen bg-white w-80 border-r-[1px]`}
                     >
                         {children}
                     </Dialog.Panel>

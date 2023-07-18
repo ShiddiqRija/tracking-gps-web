@@ -4,18 +4,18 @@ import DropdownUser from '@/Components/DropdownUser';
 import NavLink from '@/Components/NavLink';
 import { Link } from '@inertiajs/react';
 import { Toaster } from 'react-hot-toast';
+import { useEffect } from 'react';
 
 import PinDropOutlinedIcon from '@mui/icons-material/PinDropOutlined';
 import WatchOutlinedIcon from '@mui/icons-material/WatchOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import Notification from '@/Components/Notification';
-import { useEffect } from 'react';
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-    const [notification, setNotification] = useState([]);
+    const [eventNotif, setEventNotif] = useState([]);
 
     const openNotification = () => {
         setIsNotificationOpen(true);
@@ -25,20 +25,15 @@ export default function Authenticated({ user, header, children }) {
         setIsNotificationOpen(false);
     }
 
+    const updateNotif = (value) => {
+        setEventNotif(prevNotification => [...prevNotification, value]);
+    }
+
     useEffect(() => {
-        const data = { name: 'Device Name', date: 'Date' };
-
-        const interval = setInterval(() => {
-            setNotification(prevNotification => [...prevNotification, data]);
-        }, 2000);
-
-        return () => clearInterval(interval);
-
-        // const channel = Echo.channel('device-notification');
-        // channel.listen('DeviceNotificationEvent', function (data) {
-        // console.log(data.data);
-        // setNotification(prevNotification => [...prevNotification, data])
-        // });
+        const channel = Echo.channel('device-notification');
+        channel.listen('DeviceNotificationEvent', function (data) {
+            updateNotif(data.data[0]);
+        });
     }, [])
 
     return (
@@ -118,7 +113,7 @@ export default function Authenticated({ user, header, children }) {
                 </h2>
 
                 <ul role="list" className="py-1 mt-3">
-                    {notification.map((item, index) => (
+                    {eventNotif.map((item, index) => (
                         <li key={index} className="px-4 py-2 border-y cursor-pointer hover:bg-gray-100">
                             <div className="flex">
                                 <div className="font-semibold">
