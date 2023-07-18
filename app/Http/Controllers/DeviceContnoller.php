@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DeviceRequest;
 use App\Models\Device;
-// use Illuminate\Http\Request;
+use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -62,5 +62,34 @@ class DeviceContnoller extends Controller
         DB::commit();
 
         return Redirect::route('devices.index');
+    }
+
+    public function status(HttpRequest $request)
+    {
+        try {
+            $device = Device::where('device_id', $request->id)->first();
+
+            DB::beginTransaction();
+
+            $device->update([
+                'status' => $request->status,
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'data' => $device,
+                'message' => 'Device status updated successfully'
+            ]);
+        } catch (\Exception $err) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'data' => $err->getMessage(),
+                'message' => 'Failed to update device status'
+            ]);
+        }
     }
 }
