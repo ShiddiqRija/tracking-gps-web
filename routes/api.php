@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\DeviceContnoller;
+use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\PositionController;
 use Illuminate\Http\Request;
@@ -21,6 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/devices', [DeviceContnoller::class, 'status']);
+Route::post('/devices', [DeviceController::class, 'status']);
 Route::post('/events', [EventController::class, 'store']);
 Route::post('/positions', [PositionController::class, 'store']);

@@ -10,16 +10,18 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class DeviceUpdateEvent implements ShouldBroadcast
+class PositionUpdateEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    public $data;
 
     /**
      * Create a new event instance.
      */
-    public function __construct()
+    public function __construct($data)
     {
-        //
+        $this->data = $data;
     }
 
     /**
@@ -30,7 +32,16 @@ class DeviceUpdateEvent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new Channel('device-update'),
+            new Channel('position-update'),
         ];
+    }
+
+    public function broadcastWith()
+    {
+        return [
+            'data' => [
+                $this->data
+            ]
+            ];
     }
 }

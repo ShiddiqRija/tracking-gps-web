@@ -105,9 +105,9 @@ class DeviceController extends Controller
 
     public function status(HttpRequest $request)
     {
-        try {
-            $device = Device::where('device_id', $request->id)->first();
+        $device = Device::where('device_id', $request->id)->first();
 
+        try {
             DB::beginTransaction();
 
             $device->update([

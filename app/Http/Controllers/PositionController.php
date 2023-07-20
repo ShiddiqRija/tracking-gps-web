@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\DeviceUpdateEvent;
+use App\Events\PositionUpdateEvent;
 use App\Http\Resources\PositionCollection;
 use App\Models\Device;
 use App\Models\Position;
@@ -38,7 +38,9 @@ class PositionController extends Controller
 
                 DB::commit();
 
-                broadcast(new DeviceUpdateEvent);
+                $devices = Device::all();
+
+                broadcast(new PositionUpdateEvent(new PositionCollection($devices)));
 
                 return response()->json([
                     'success' => true,
