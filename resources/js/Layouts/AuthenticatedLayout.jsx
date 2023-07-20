@@ -4,18 +4,18 @@ import DropdownUser from '@/Components/DropdownUser';
 import NavLink from '@/Components/NavLink';
 import { Link } from '@inertiajs/react';
 import { Toaster } from 'react-hot-toast';
-import { useEffect } from 'react';
 
 import PinDropOutlinedIcon from '@mui/icons-material/PinDropOutlined';
 import WatchOutlinedIcon from '@mui/icons-material/WatchOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import Notification from '@/Components/Notification';
+import { useNotification } from '@/Components/Context/NotificationContext';
 
 export default function Authenticated({ user, header, children }) {
-    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    const {notifData} = useNotification();
+    // const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-    const [eventNotif, setEventNotif] = useState([]);
 
     const openNotification = () => {
         setIsNotificationOpen(true);
@@ -24,17 +24,6 @@ export default function Authenticated({ user, header, children }) {
     const closeNotification = () => {
         setIsNotificationOpen(false);
     }
-
-    const updateNotif = (value) => {
-        setEventNotif(prevNotification => [...prevNotification, value]);
-    }
-
-    useEffect(() => {
-        const channel = Echo.channel('device-notification');
-        channel.listen('DeviceNotificationEvent', function (data) {
-            updateNotif(data.data[0]);
-        });
-    }, [])
 
     return (
         <>
@@ -113,7 +102,7 @@ export default function Authenticated({ user, header, children }) {
                 </h2>
 
                 <ul role="list" className="py-1 mt-3">
-                    {eventNotif.map((item, index) => (
+                    {notifData.map((item, index) => (
                         <li key={index} className="px-4 py-2 border-y cursor-pointer hover:bg-gray-100">
                             <div className="flex">
                                 <div className="font-semibold">
