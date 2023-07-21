@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\DeviceNotificationEvent;
+use App\Http\Resources\EventResource;
 use App\Models\Device;
 use App\Models\Event;
 use Illuminate\Http\Request;
@@ -22,7 +23,7 @@ class EventController extends Controller
 
                 DB::commit();
 
-                broadcast(new DeviceNotificationEvent($event));
+                broadcast(new DeviceNotificationEvent(new EventResource($event)));
 
                 return response()->json([
                     'success' => true,

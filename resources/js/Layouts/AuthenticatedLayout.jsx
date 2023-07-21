@@ -103,15 +103,16 @@ export default function Authenticated({ user, header, children }) {
 
                 <ul role="list" className="py-1 mt-3">
                     {notifData.map((item, index) => (
+                        
                         <li key={index} className="px-4 py-2 border-y cursor-pointer hover:bg-gray-100">
                             <div className="flex">
                                 <div className="font-semibold">
-                                    {item.name}
+                                    {item.attributes.message.split(" at ")[0]}
                                 </div>
                             </div>
                             <div className="flex py-1">
                                 <div className="font-light text-gray-600 text-sm">
-                                    {item.date}
+                                    {item.attributes.message.split(" at ")[1]}
                                 </div>
                             </div>
                         </li>

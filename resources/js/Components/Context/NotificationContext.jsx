@@ -12,7 +12,6 @@ export function NotificationProvider({ children }) {
     useEffect(() => {
         const channel = Echo.channel('device-notification');
         channel.listen('DeviceNotificationEvent', function (data) {
-            console.log(data.data);
             updateNotification(data.data[0]);
         });
     }, [])

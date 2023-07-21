@@ -21,4 +21,9 @@ class Event extends Model
         'geofence_id',
         'maintenance_id',
     ];
+
+    public function devices()
+    {
+        return $this->hasOne(Device::class, 'device_id', 'device_id');
+    }
 }
