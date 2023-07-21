@@ -17,6 +17,7 @@ class Device extends Model
         'unique_id',
         'status',
         'last_update',
+        'location',
         'position_id',
         'phone',
         'contact',
