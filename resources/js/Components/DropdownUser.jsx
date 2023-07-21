@@ -23,7 +23,7 @@ const Trigger = ({ children }) => {
 
     return (
         <>
-            <div onClick={toggleOpen}>{children}</div>
+            <div className="hover:opacity-75 transition" onClick={toggleOpen}>{children}</div>
 
             {open && <div className="fixed inset-0 z-40" onClick={() => setOpen(false)}></div>}
         </>
@@ -61,7 +61,7 @@ const DropdownLink = ({ className = '', children, ...props }) => {
         <Link
             {...props}
             className={
-                'block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-blue-200 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out ' +
+                'block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-blue-200 hover:rounded-md focus:outline-none focus:bg-blue-100 transition duration-150 ease-in-out ' +
                 className
             }
         >

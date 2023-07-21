@@ -1,11 +1,10 @@
 <?php
 
-use App\Events\DeviceNotificationEvent;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProfileController;
-use Carbon\Carbon;
+use App\Http\Controllers\Setting\WifiController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -33,20 +32,17 @@ use Inertia\Inertia;
 Route::get('/', [PositionController::class, 'index'])->middleware(['auth', 'verified'])->name('positions.index');
 
 Route::resource('devices', DeviceController::class)
-    ->only(['index', 'store', 'edit', 'update'])
+    ->only(['index', 'store', 'edit', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
 
 Route::resource('messages', MessageController::class)
     ->only(['index', 'store'])
     ->middleware(['auth', 'verified']);
 
-Route::get('/testing', function () {
-    $data = [
-        'name' => 'Device Test',
-        'date' => Carbon::now()
-    ];
-    broadcast(new DeviceNotificationEvent($data));
-});
+Route::prefix('settings')->group(function () {
+    Route::resource('wifi', WifiController::class)
+    ->only(['index', 'store', 'edit', 'update', 'destroy']);
+})->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

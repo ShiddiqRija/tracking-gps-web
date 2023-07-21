@@ -78,7 +78,7 @@ export default function Authenticated({ user, header, children }) {
                         </li>
                     </ul>
 
-                    <div className=" hover:opacity-75 transition">
+                    <div>
                         <DropdownUser>
                             <DropdownUser.Trigger>
                                 <div className="relative inline-block rounded-full overflow-hidden cursor-pointer h-9 w-9 md:h-11 md:w-11">
@@ -89,6 +89,7 @@ export default function Authenticated({ user, header, children }) {
 
                             <DropdownUser.Content>
                                 <DropdownUser.Link href={route('profile.edit')}>Profile</DropdownUser.Link>
+                                <DropdownUser.Link href={route('wifi.index')}>Settings</DropdownUser.Link>
                                 <DropdownUser.Link className="text-rose-500" href={route('logout')} method="post" as="button">Log Out</DropdownUser.Link>
                             </DropdownUser.Content>
                         </DropdownUser>
