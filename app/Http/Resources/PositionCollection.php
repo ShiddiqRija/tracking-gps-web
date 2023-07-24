@@ -35,6 +35,7 @@ class PositionCollection extends ResourceCollection
                 'name' => $item->name,
                 'unique_id' => $item->unique_id,
                 'status' => $item->status,
+                'location' => $item->location,
                 'position' => $positions,
             ];
         });

@@ -6,6 +6,7 @@ use App\Events\PositionUpdateEvent;
 use App\Http\Resources\PositionCollection;
 use App\Models\Device;
 use App\Models\Position;
+use App\Models\Wifi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -30,8 +31,34 @@ class PositionController extends Controller
                 DB::beginTransaction();
 
                 $position = Position::create($request->all());
+                $nearestLocation = '';
+
+                if ($position->network == 'null') {
+                    $nearestLocation = 'Outdoor';
+                } else {
+                    $network = json_decode($position->network, true);
+                    $wifis = Wifi::all();
+
+                    foreach ($network['wifiAccessPoints'] as $wifiAP) {
+                        if ($nearestLocation == '') {
+                            foreach ($wifis as $wifi) {
+                                $mac = strtolower($wifi->mac);
+                                if ($wifiAP['macAddress'] === $mac) {
+                                    $nearestLocation = $wifi->location_name;
+                                }
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+
+                    if ($nearestLocation == '') {
+                        $nearestLocation = 'Outdoor';
+                    }
+                }
 
                 $device->update([
+                    'location' => $nearestLocation,
                     'position_id' => $position->id,
                     'last_update' => round(microtime(true) * 1000)
                 ]);

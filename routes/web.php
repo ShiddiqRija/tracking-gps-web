@@ -5,6 +5,8 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Setting\WifiController;
+use App\Models\Position;
+use App\Models\Wifi;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -41,7 +43,7 @@ Route::resource('messages', MessageController::class)
 
 Route::prefix('settings')->group(function () {
     Route::resource('wifi', WifiController::class)
-    ->only(['index', 'store', 'edit', 'update', 'destroy']);
+        ->only(['index', 'store', 'edit', 'update', 'destroy']);
 })->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
@@ -50,4 +52,35 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+Route::get('/testing', function () {
+    $position = Position::where('id', 1832)->first();
+
+    // $nearestLocation = '';
+    // if ($position->network == null) {
+    //     $nearestLocation = 'Outdoor';
+    // } else {
+    //     $network = json_decode($position->network, true);
+    //     $wifis = Wifi::all();
+
+    //     foreach ($network['wifiAccessPoints'] as $wifiAP) {
+    //         if ($nearestLocation == '') {
+    //             foreach ($wifis as $wifi) {
+    //                 $mac = strtolower($wifi->mac);
+    //                 if ($wifiAP['macAddress'] === $mac) {
+    //                     $nearestLocation = $wifi->location_name;
+    //                 }
+    //             }
+    //         } else {
+    //             break;
+    //         }
+    //     }
+
+    //     if ($nearestLocation == '') {
+    //         $nearestLocation = 'Outdoor';
+    //     }
+    // }
+
+    return $position->network;
+});
+
+require __DIR__ . '/auth.php';

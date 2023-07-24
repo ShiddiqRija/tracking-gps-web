@@ -28,6 +28,7 @@ export default function Index({ auth }) {
         name: '',
         contact: '',
         phone: '',
+        location: '',
         lat: '',
         lng: ''
     });
@@ -101,6 +102,7 @@ export default function Index({ auth }) {
                 name: value.name,
                 contact: value.contact && '-',
                 phone: value.phone && '-',
+                location: value.location,
                 lat: value.position.latitude,
                 lng: value.position.longitude
             })
@@ -142,6 +144,10 @@ export default function Index({ auth }) {
                             <tr>
                                 <th scope="row" className="px-2 py-1">Phone</th>
                                 <td className="px-2 py-1">{deviceInfo.phone}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" className="px-2 py-1">Location</th>
+                                <td className="px-2 py-1">{deviceInfo.location}</td>
                             </tr>
                             <tr>
                                 <th scope="row" className="px-2 py-1">Latitude</th>
