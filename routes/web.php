@@ -4,6 +4,7 @@ use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Setting\AppLocationController;
 use App\Http\Controllers\Setting\WifiController;
 use App\Models\Wifi;
 use Illuminate\Foundation\Application;
@@ -44,6 +45,8 @@ Route::resource('messages', MessageController::class)
 Route::prefix('settings')->group(function () {
     Route::resource('wifi', WifiController::class)
         ->only(['index', 'store', 'edit', 'update', 'destroy']);
+    Route::resource('location', AppLocationController::class)
+        ->only(['index', 'update']);
 })->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {

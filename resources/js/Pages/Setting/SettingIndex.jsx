@@ -18,8 +18,8 @@ export default function SettingIndex({ auth, title = '', children }) {
                     </div>
                     <ul role="list" className="flex flex-col items-start space-y-1 mt-4">
                         <SettingNavLink
-                            href={route('positions.index')}
-                            active={route().current('positions.index')}
+                            href={route('location.index')}
+                            active={route().current('location.index')}
                         >
                             Tracking Location
                         </SettingNavLink>
