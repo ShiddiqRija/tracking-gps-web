@@ -49,8 +49,8 @@ export default function Index({ auth }) {
                 lat: 1.1134006,
                 lng: 104.0652815,
                 zoom: 11,
-                disableDefaultUI: true,
-                mapType: 'satellite' 
+                // disableDefaultUI: true,
+                // mapType: 'satellite' 
             });
 
             setMap(initMap);
