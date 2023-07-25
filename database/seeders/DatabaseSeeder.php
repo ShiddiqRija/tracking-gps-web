@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\AppLocation;
 use App\Models\Device;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -26,6 +27,12 @@ class DatabaseSeeder extends Seeder
             'name'      => 'Administrator',
             'email'     => 'admin@tracking.com',
             'password'  => bcrypt('password')
+        ]);
+
+        AppLocation::create([
+            'latitude' => 0.0,
+            'longitude' => 0.0,
+            'zoom' => 0
         ]);
 
         // Device::factory(50)->create();
