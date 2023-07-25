@@ -5,9 +5,9 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Setting\WifiController;
-use App\Models\Position;
 use App\Models\Wifi;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -52,35 +52,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/testing', function () {
-    $position = Position::where('id', 1832)->first();
-
-    // $nearestLocation = '';
-    // if ($position->network == null) {
-    //     $nearestLocation = 'Outdoor';
-    // } else {
-    //     $network = json_decode($position->network, true);
-    //     $wifis = Wifi::all();
-
-    //     foreach ($network['wifiAccessPoints'] as $wifiAP) {
-    //         if ($nearestLocation == '') {
-    //             foreach ($wifis as $wifi) {
-    //                 $mac = strtolower($wifi->mac);
-    //                 if ($wifiAP['macAddress'] === $mac) {
-    //                     $nearestLocation = $wifi->location_name;
-    //                 }
-    //             }
-    //         } else {
-    //             break;
-    //         }
-    //     }
-
-    //     if ($nearestLocation == '') {
-    //         $nearestLocation = 'Outdoor';
-    //     }
-    // }
-
-    return $position->network;
-});
+// Route::get('/testing', function () {
+//     return Inertia::render('Setting/Testing/Index', [
+//         'wifis' => Wifi::query()
+//                 ->filter(Request::only('search'))
+//                 ->paginate(10)
+//     ]);
+// });
 
 require __DIR__ . '/auth.php';

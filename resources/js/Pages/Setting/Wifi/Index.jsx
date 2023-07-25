@@ -3,7 +3,6 @@ import { useState } from "react";
 
 import { toast } from "react-hot-toast";
 
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Button from "@/Components/Atom/Button";
 import Modal from "@/Components/Modal";
 import InputLabel from "@/Components/Atom/InputLabel";
@@ -14,6 +13,7 @@ import AutoFixHighOutlinedIcon from '@mui/icons-material/AutoFixHighOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import axios from "axios";
 import { Pagination } from "@mui/material";
+import SettingIndex from "../SettingIndex";
 
 export default function Index({ auth }) {
     const { wifis } = usePage().props;
@@ -81,15 +81,13 @@ export default function Index({ auth }) {
     }
 
     return (
-        <AuthenticatedLayout
-            user={auth.user}
+        <SettingIndex
+            auth={auth}
+            title="Wifi Location"
         >
-            <Head title="Wifi" />
-
-            <div className="px-4 py-5 sm:px-6 ls:px-8 h-screen bg-gray-100">
+            <div className="flex-1 px-4 py-5 sm:px-6 ls:px-8 bg-gray-100">
                 <div className="flex justify-between items-center mb-4">
                     <h3>Wifi Location List</h3>
-
                     <Button primary onClick={addDevice}>+ Add Wifi Location</Button>
                 </div>
 
@@ -214,6 +212,7 @@ export default function Index({ auth }) {
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </SettingIndex>
+
     )
 }
