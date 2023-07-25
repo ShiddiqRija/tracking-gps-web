@@ -24,7 +24,6 @@ export default function UpdateAppLocation({ className = '' }) {
             onProgress: () => toast.loading('Updating...'),
             onSuccess: () => {
                 toast.success('Location updated!');
-                closeModal();
             },
             onError: () => toast.error('Could not update.'),
         });
