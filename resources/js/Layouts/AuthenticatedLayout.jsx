@@ -89,7 +89,7 @@ export default function Authenticated({ user, header, children }) {
 
                             <DropdownUser.Content>
                                 <DropdownUser.Link href={route('profile.edit')}>Profile</DropdownUser.Link>
-                                <DropdownUser.Link href={route('wifi.index')}>Settings</DropdownUser.Link>
+                                <DropdownUser.Link href={route('location.index')}>Settings</DropdownUser.Link>
                                 <DropdownUser.Link className="text-rose-500" href={route('logout')} method="post" as="button">Log Out</DropdownUser.Link>
                             </DropdownUser.Content>
                         </DropdownUser>
