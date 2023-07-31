@@ -1,4 +1,4 @@
-import Echo from 'laravel-echo';
+import Echo from "laravel-echo";
 
 const EchoLaravel = new Echo({
     broadcaster: "pusher",

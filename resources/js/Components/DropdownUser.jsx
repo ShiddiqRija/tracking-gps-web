@@ -1,6 +1,6 @@
-import { useState, createContext, useContext, Fragment } from 'react';
-import { Link } from '@inertiajs/react';
-import { Transition } from '@headlessui/react';
+import { useState, createContext, useContext, Fragment } from "react";
+import { Link } from "@inertiajs/react";
+import { Transition } from "@headlessui/react";
 
 const DropDownContext = createContext();
 
@@ -23,9 +23,16 @@ const Trigger = ({ children }) => {
 
     return (
         <>
-            <div className="hover:opacity-75 transition" onClick={toggleOpen}>{children}</div>
+            <div className="hover:opacity-75 transition" onClick={toggleOpen}>
+                {children}
+            </div>
 
-            {open && <div className="fixed inset-0 z-40" onClick={() => setOpen(false)}></div>}
+            {open && (
+                <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setOpen(false)}
+                ></div>
+            )}
         </>
     );
 };
@@ -49,19 +56,23 @@ const Content = ({ children }) => {
                     className={`absolute left-20 z-50 bottom-2 w-36 rounded-md`}
                     onClick={() => setOpen(false)}
                 >
-                    <div className={`rounded-md ring-1 ring-black ring-opacity-5 bg-white drop-shadow-lg`}>{children}</div>
+                    <div
+                        className={`rounded-md ring-1 ring-black ring-opacity-5 bg-white drop-shadow-lg`}
+                    >
+                        {children}
+                    </div>
                 </div>
             </Transition>
         </>
     );
 };
 
-const DropdownLink = ({ className = '', children, ...props }) => {
+const DropdownLink = ({ className = "", children, ...props }) => {
     return (
         <Link
             {...props}
             className={
-                'block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-blue-200 hover:rounded-md focus:outline-none focus:bg-blue-100 transition duration-150 ease-in-out ' +
+                "block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-blue-200 hover:rounded-md focus:outline-none focus:bg-blue-100 transition duration-150 ease-in-out " +
                 className
             }
         >

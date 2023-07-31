@@ -6,33 +6,36 @@ import { Transition } from "@headlessui/react";
 import { useForm, usePage } from "@inertiajs/react";
 import { toast } from "react-hot-toast";
 
-export default function UpdateAppLocation({ className = '' }) {
+export default function UpdateAppLocation({ className = "" }) {
     const location = usePage().props.location;
 
-    const { data, setData, put, errors, processing, recentlySuccessful } = useForm({
-        id: location.id,
-        latitude: location.latitude,
-        longitude: location.longitude,
-        zoom: location.zoom,
-    });
+    const { data, setData, put, errors, processing, recentlySuccessful } =
+        useForm({
+            id: location.id,
+            latitude: location.latitude,
+            longitude: location.longitude,
+            zoom: location.zoom,
+        });
 
     const submit = (e) => {
         e.preventDefault();
 
-        put(route('location.update', { id: location.id }), {
+        put(route("location.update", { id: location.id }), {
             preserveScroll: true,
-            onProgress: () => toast.loading('Updating...'),
+            onProgress: () => toast.loading("Updating..."),
             onSuccess: () => {
-                toast.success('Location updated!');
+                toast.success("Location updated!");
             },
-            onError: () => toast.error('Could not update.'),
+            onError: () => toast.error("Could not update."),
         });
-    }
+    };
 
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">Location Information</h2>
+                <h2 className="text-lg font-medium text-gray-900">
+                    Location Information
+                </h2>
 
                 <p className="mt-1 text-sm text-gray-600">
                     Update location information for tracking
@@ -47,7 +50,7 @@ export default function UpdateAppLocation({ className = '' }) {
                         id="latitude"
                         className="mt-1 block w-full"
                         value={data.latitude}
-                        onChange={(e) => setData('latitude', e.target.value)}
+                        onChange={(e) => setData("latitude", e.target.value)}
                         required
                         isFocused
                         autoComplete="latitude"
@@ -63,7 +66,7 @@ export default function UpdateAppLocation({ className = '' }) {
                         id="longitude"
                         className="mt-1 block w-full"
                         value={data.longitude}
-                        onChange={(e) => setData('longitude', e.target.value)}
+                        onChange={(e) => setData("longitude", e.target.value)}
                         required
                         autoComplete="longitude"
                     />
@@ -78,7 +81,7 @@ export default function UpdateAppLocation({ className = '' }) {
                         id="zoom"
                         className="mt-1 block w-full"
                         value={data.zoom}
-                        onChange={(e) => setData('zoom', e.target.value)}
+                        onChange={(e) => setData("zoom", e.target.value)}
                         required
                         autoComplete="zoom"
                     />
@@ -87,11 +90,7 @@ export default function UpdateAppLocation({ className = '' }) {
                 </div>
 
                 <div className="flex justify-end items-center gap-4">
-                    <Button
-                        primary
-                        type="submit"
-                        disabled={processing}
-                    >
+                    <Button primary type="submit" disabled={processing}>
                         Save
                     </Button>
 
@@ -107,5 +106,5 @@ export default function UpdateAppLocation({ className = '' }) {
                 </div>
             </form>
         </section>
-    )
+    );
 }

@@ -71,7 +71,7 @@ export default function Index({ auth }) {
 
                             <ComboBox
                                 data={devices}
-                                onChange={(e) => setData('device_id', e)}
+                                onChange={(e) => setData("device_id", e)}
                                 selectedBy="id"
                                 showBy="name"
                             />
