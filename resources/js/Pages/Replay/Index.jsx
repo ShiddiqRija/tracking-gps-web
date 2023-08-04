@@ -35,24 +35,42 @@ export default function Index() {
 
     const { data, setData, post, processing, errors, reset } = useForm({
         device_id: devices[0].id,
-        period: periods[0].type,
-        from: moment().format("YYYY-MM-DDTHH:mm"),
-        to: moment().add(1, "hour").format("YYYY-MM-DDTHH:mm"),
+        from: moment().startOf("day").valueOf(),
+        to: moment().endOf("day").valueOf(),
     });
 
     const handlePeriod = (type) => {
         setIsCustom(type === "Custom");
+
+        if (type === "Custom") {
+            setData({
+                ...data,
+                from: moment().valueOf(),
+                to: moment().add(1, "hour").valueOf(),
+            });
+        } else {
+            setData({
+                ...data,
+                from: moment().startOf("day").valueOf(),
+                to: moment().endOf("day").valueOf(),
+            });
+        }
+
+        console.log(data);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        console.log(data);
+
         map.removePolylines();
+        map.removeMarkers();
         const response = await axios.post(route("replay.store"), data);
 
         if (response.data.length > 1) {
             setIsHistoryShow(true);
-            setIndex(0)
+            setIndex(0);
             setPositions(response.data);
 
             const wayPointsData = response.data.map((value) => ({
@@ -180,7 +198,7 @@ export default function Index() {
                                         data={periods}
                                         onChange={(e) => {
                                             handlePeriod(e);
-                                            setData("period", e);
+                                            // setData("period", e);
                                         }}
                                         selectedBy="type"
                                         showBy="type"
@@ -202,11 +220,15 @@ export default function Index() {
                                             <DateTimeInput
                                                 id="from"
                                                 name="from"
-                                                value={data.from}
+                                                value={moment(data.from).format(
+                                                    "YYYY-MM-DDTHH:mm"
+                                                )}
                                                 onChange={(e) =>
                                                     setData(
                                                         "from",
-                                                        e.target.value
+                                                        moment(
+                                                            e.target.value
+                                                        ).valueOf()
                                                     )
                                                 }
                                                 className="mt-1 block w-full"
@@ -227,11 +249,15 @@ export default function Index() {
                                             <DateTimeInput
                                                 id="to"
                                                 name="to"
-                                                value={data.to}
+                                                value={moment(data.to).format(
+                                                    "YYYY-MM-DDTHH:mm"
+                                                )}
                                                 onChange={(e) =>
                                                     setData(
                                                         "to",
-                                                        e.target.value
+                                                        moment(
+                                                            e.target.value
+                                                        ).valueOf()
                                                     )
                                                 }
                                                 className="mt-1 block w-full"

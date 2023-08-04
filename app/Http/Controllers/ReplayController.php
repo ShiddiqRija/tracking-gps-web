@@ -25,7 +25,9 @@ class ReplayController extends Controller
 
     public function store(Request $request)
     {
-        $positionHistory = Position::where('device_id', $request->device_id)->get();
+        $positionHistory = Position::where('device_id', $request->device_id)
+            ->whereBetween('device_time', [$request->from, $request->to])
+            ->get();
 
         return response()->json($positionHistory);
     }
