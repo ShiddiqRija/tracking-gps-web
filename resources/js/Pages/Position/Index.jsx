@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Head, usePage } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import TextInput from "@/Components/Atom/TextInput";
@@ -194,6 +194,9 @@ export default function Index({ auth }) {
                                     Longitude
                                 </th>
                                 <td className="px-2 py-1">{deviceInfo.lng}</td>
+                            </tr>
+                            <tr>
+                                <td colSpan={2} className="px-2 py-1"><Button fullWidth onClick={() => router.visit(route('replay.index'))}>Replay</Button></td>
                             </tr>
                         </tbody>
                     </table>
