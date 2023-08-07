@@ -93,7 +93,7 @@ export default function UpdateProfileInformation({
                 )}
 
                 <div className="flex items-center gap-4">
-                    <Button primary disabled={processing}>
+                    <Button primary type="submit" disabled={processing}>
                         Save
                     </Button>
 
