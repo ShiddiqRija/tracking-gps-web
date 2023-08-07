@@ -1,19 +1,17 @@
-import { Head, router, useForm, usePage } from "@inertiajs/react";
+import { useForm, usePage } from "@inertiajs/react";
 import { useState } from "react";
 
 import { toast } from "react-hot-toast";
+import axios from "axios";
+
+import SettingIndex from "../SettingIndex";
 
 import Button from "@/Components/Atom/Button";
 import Modal from "@/Components/Modal";
 import InputLabel from "@/Components/Atom/InputLabel";
 import TextInput from "@/Components/Atom/TextInput";
 import InputError from "@/Components/Atom/InputError";
-
-import AutoFixHighOutlinedIcon from "@mui/icons-material/AutoFixHighOutlined";
-import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import axios from "axios";
-import { Pagination } from "@mui/material";
-import SettingIndex from "../SettingIndex";
+import WifiTable from "./Partials/WifiTable";
 
 export default function Index({ auth }) {
     const { wifis } = usePage().props;
@@ -31,7 +29,7 @@ export default function Index({ auth }) {
         setIsModalOpen(true);
     };
 
-    const updateDevice = async (id) => {
+    const updateWifi = async (id) => {
         const { data } = await axios.get(route("wifi.edit", { id: id }));
 
         setData({
@@ -151,109 +149,7 @@ export default function Index({ auth }) {
                     </form>
                 </Modal>
 
-                <div className="block w-full bg-white rounded-t-lg px-4 py-4">
-                    <div className="flex justify-end">
-                        <TextInput
-                            id="search"
-                            name="search"
-                            onChange={(e) => {
-                                e.preventDefault();
-
-                                router.visit(
-                                    route(route().current(), {
-                                        search: e.target.value,
-                                    }),
-                                    {
-                                        preserveState: true,
-                                        replace: true,
-                                    }
-                                );
-                            }}
-                            className="mb-2 block w-60"
-                            placeholder="Search..."
-                        />
-                    </div>
-                    <table className="table-fixed min-w-full border border-gray-300 divide-y divide-gray-200">
-                        <thead>
-                            <tr>
-                                <th className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
-                                    No
-                                </th>
-                                <th className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
-                                    Location Name
-                                </th>
-                                <th className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
-                                    Mac Address
-                                </th>
-                                <th className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {wifis.data.map((device, index) => (
-                                <tr key={device.id}>
-                                    <td className="px-4 py-2 text-sm text-gray-500 whitespace-nowrap">
-                                        {device.id}
-                                    </td>
-                                    <td className="px-4 py-2 text-sm text-gray-500 whitespace-nowrap">
-                                        {device.location_name}
-                                    </td>
-                                    <td className="px-4 py-2 text-sm text-gray-500 whitespace-nowrap">
-                                        {device.mac}
-                                    </td>
-                                    <td className="px-4 py-2 text-sm text-gray-500 whitespace-nowrap">
-                                        <button
-                                            type="button"
-                                            className="text-sky-600 text-opacity-50 hover:text-opacity-100 cursor-pointer mr-4"
-                                            onClick={() =>
-                                                updateDevice(device.id)
-                                            }
-                                        >
-                                            <AutoFixHighOutlinedIcon />
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="text-rose-600 text-opacity-50 hover:text-opacity-100 cursor-pointer "
-                                        >
-                                            <DeleteOutlinedIcon />
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                            {wifis.data.length === 0 && (
-                                <tr>
-                                    <td
-                                        className="px-4 py-2 text-s text-center text-gray-500 whitespace-nowrap"
-                                        colSpan="9"
-                                    >
-                                        No Wifi/Router found.
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-
-                    <div className="mt-2 flex justify-end">
-                        <Pagination
-                            variant="outlined"
-                            shape="rounded"
-                            count={wifis.last_page}
-                            page={wifis.current_page}
-                            onChange={(event, page) => {
-                                event.preventDefault();
-
-                                router.visit(
-                                    route(route().current(), { page }),
-                                    {
-                                        preserveState: true,
-                                        replace: true,
-                                    }
-                                );
-                            }}
-                        />
-                    </div>
-                </div>
+                <WifiTable wifis={wifis} updateWifi={updateWifi} />
             </div>
         </SettingIndex>
     );
