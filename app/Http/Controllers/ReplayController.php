@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AppLocation;
 use App\Models\Device;
 use App\Models\Position;
 use Illuminate\Http\Request;
@@ -20,6 +21,7 @@ class ReplayController extends Controller
                     'type' => 'Custom'
                 ]
             ],
+            'locationInit' => AppLocation::first()
         ]);
     }
 

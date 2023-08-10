@@ -7,6 +7,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReplayController;
 use App\Http\Controllers\Setting\AppLocationController;
 use App\Http\Controllers\Setting\WifiController;
+use App\Http\Resources\PositionCollection;
+use App\Models\Device;
 use App\Models\Wifi;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Request;
@@ -61,10 +63,25 @@ Route::middleware('auth')->group(function () {
 });
 
 // Route::get('/testing', function () {
-//     return Inertia::render('Setting/Testing/Index', [
-//         'wifis' => Wifi::query()
-//                 ->filter(Request::only('search'))
-//                 ->paginate(10)
+//     return Inertia::render('Test/Index');
+// });
+// Route::get('/testing-replay', function () {
+//     return Inertia::render('Test/Replay', [
+//         'devices' => Device::all(),
+//         'periods' => [
+//             [
+//                 'type' => 'Today'
+//             ], [
+//                 'type' => 'Custom'
+//             ]
+//         ],
+//     ]);
+// });
+// Route::get('/testing-position', function () {
+//     $devices = Device::all();
+
+//     return Inertia::render('Test/Position', [
+//         'devices' => new PositionCollection($devices)
 //     ]);
 // });
 

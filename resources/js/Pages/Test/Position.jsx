@@ -9,7 +9,7 @@ import DeviceList from "./Partials/DeviceList";
 import DeviceInfo from "./Partials/DeviceInfo";
 
 export default function Index({ auth }) {
-    const { devices, locationInit } = usePage().props;
+    const { devices } = usePage().props;
     const [isDeviceInfoOpen, setIsDeviceInfoOpen] = useState(false);
     const [deviceData, setDeviceData] = useState([]);
     const [positionData, setPositionData] = useState([]);
@@ -56,10 +56,9 @@ export default function Index({ auth }) {
 
     useEffect(() => {
         map.setCenter({
-            lat: locationInit.latitude - 0.0001,
-            lng: locationInit.longitude + 0.0005
+            lat: 1.1134006,
+            lng: 104.0652815,
         });
-        map.setZoom(locationInit.zoom);
     }, []);
 
     useEffect(() => {

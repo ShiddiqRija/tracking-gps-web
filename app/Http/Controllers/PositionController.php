@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\PositionUpdateEvent;
 use App\Http\Resources\PositionCollection;
+use App\Models\AppLocation;
 use App\Models\Device;
 use App\Models\Position;
 use App\Models\Wifi;
@@ -16,9 +17,11 @@ class PositionController extends Controller
     public function index()
     {
         $devices = Device::all();
+        $locationInit = AppLocation::first();
 
         return Inertia::render('Position/Index', [
-            'positions' => new PositionCollection($devices)
+            'devices' => new PositionCollection($devices),
+            'locationInit' => $locationInit
         ]);
     }
 

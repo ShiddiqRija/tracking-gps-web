@@ -22,8 +22,8 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import FastForwardIcon from "@mui/icons-material/FastForward";
 
-export default function Index() {
-    const { devices, periods, locationInit } = usePage().props;
+export default function Replay() {
+    const { devices, periods } = usePage().props;
     const timerRef = useRef();
 
     const [isCustom, setIsCustom] = useState(false);
@@ -97,13 +97,10 @@ export default function Index() {
     };
 
     useEffect(() => {
-        map.removeMarkers();
-
         map.setCenter({
-            lat: locationInit.latitude - 0.00001,
-            lng: locationInit.longitude + 0.0005,
+            lat: 1.1134006,
+            lng: 104.0652815,
         });
-        map.setZoom(locationInit.zoom);
     }, []);
 
     return (
