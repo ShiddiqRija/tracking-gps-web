@@ -60,8 +60,11 @@ class PositionController extends Controller
                     }
                 }
 
-                $device->update([
+                $position->update([
                     'location' => $nearestLocation,
+                ]);
+
+                $device->update([
                     'position_id' => $position->id,
                     'last_update' => round(microtime(true) * 1000)
                 ]);

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('positions', function (Blueprint $table) {
             $table->integer('id');
             $table->integer('device_id');
+            $table->string('location')->default('Outdoor')->nullable();
             $table->double('latitude', 10, 7)->nullable();
             $table->double('longitude', 10, 7)->nullable();
             $table->bigInteger('server_time');

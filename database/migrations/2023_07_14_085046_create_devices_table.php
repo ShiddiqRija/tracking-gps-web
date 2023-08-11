@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('unique_id');
             $table->string('status');
             $table->bigInteger('last_update')->default(0);
-            $table->string('location')->default('unknown');
             $table->bigInteger('position_id')->default(0);
             $table->string('phone')->nullable();
             $table->string('contact')->nullable();

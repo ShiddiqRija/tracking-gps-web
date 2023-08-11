@@ -27,7 +27,7 @@ export default function Index({ auth }) {
             name: value.name,
             contact: value.contact && "-",
             phone: value.phone && "-",
-            location: value.location,
+            location: value.position.location,
             lat: value.position.latitude,
             lng: value.position.longitude,
         });

@@ -14,6 +14,7 @@ class Position extends Model
     protected $fillable = [
         'id',
         'device_id',
+        'location',
         'latitude',
         'longitude',
         'server_time',

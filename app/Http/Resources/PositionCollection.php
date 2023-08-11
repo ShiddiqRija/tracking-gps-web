@@ -20,6 +20,7 @@ class PositionCollection extends ResourceCollection
                 $positions = null;
             } else {
                 $positions = [
+                    'location' => $positionData->location,
                     'latitude' => $positionData->latitude,
                     'longitude' => $positionData->longitude,
                     'device_time' => $positionData->device_time,
@@ -35,7 +36,6 @@ class PositionCollection extends ResourceCollection
                 'name' => $item->name,
                 'unique_id' => $item->unique_id,
                 'status' => $item->status,
-                'location' => $item->location,
                 'position' => $positions,
             ];
         });

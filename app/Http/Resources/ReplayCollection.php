@@ -16,6 +16,7 @@ class ReplayCollection extends ResourceCollection
     {
         return $this->collection->map(function ($item) {
             $positions = [
+                'location' => $item->location,
                 'latitude' => $item->latitude,
                 'longitude' => $item->longitude,
                 'device_time' => $item->device_time,
@@ -30,7 +31,6 @@ class ReplayCollection extends ResourceCollection
                 'name' => $item->device->name,
                 'unique_id' => $item->device->unique_id,
                 'status' => $item->device->status,
-                'location' => $item->device->location,
                 'position' => $positions,
             ];
         });
