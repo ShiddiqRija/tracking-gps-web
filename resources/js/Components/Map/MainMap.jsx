@@ -10,6 +10,18 @@ export default function MainMap({
     useEffect(() => {
         map.removePolygons();
         map.removePolylines();
+
+        map.setOptions({
+            mapTypeControl: true,
+            mapTypeControlOptions: {
+                style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+                position: google.maps.ControlPosition.TOP_CENTER,
+            },
+            zoomControl: true,
+            zoomControlOptions: {
+                position: google.maps.ControlPosition.LEFT_TOP,
+            },
+        });
     }, []);
 
     return (

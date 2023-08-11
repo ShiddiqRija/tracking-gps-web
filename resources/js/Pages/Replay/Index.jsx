@@ -136,6 +136,18 @@ export default function Index() {
             lng: locationInit.longitude + 0.0005,
         });
         map.setZoom(locationInit.zoom);
+
+        map.setOptions({
+            mapTypeControl: true,
+            mapTypeControlOptions: {
+                style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+                position: google.maps.ControlPosition.TOP_CENTER,
+            },
+            zoomControl: true,
+            zoomControlOptions: {
+                position: google.maps.ControlPosition.RIGHT_TOP,
+            },
+        });
     }, []);
 
     return (
