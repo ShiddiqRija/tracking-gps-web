@@ -86,6 +86,11 @@ export default function Index() {
             );
             setDevice(response.data);
 
+            map.setCenter({
+                lat: response.data[0].position.latitude,
+                lng: response.data[0].position.longitude,
+            });
+
             map.setZoom(20);
         } else {
             toast.error("No position data.");
@@ -122,6 +127,17 @@ export default function Index() {
             clearInterval(timerRef.current);
             setPlaying(false);
         }
+
+        if (device[index]) {
+            setDeviceInfo({
+                name: device[index].name,
+                contact: device[index].contact && "-",
+                phone: device[index].phone && "-",
+                location: device[index].position.location,
+                lat: device[index].position.latitude,
+                lng: device[index].position.longitude,
+            });
+        }
     }, [index, positions]);
 
     const onPointClick = (index) => {
@@ -132,8 +148,8 @@ export default function Index() {
         map.removeMarkers();
 
         map.setCenter({
-            lat: locationInit.latitude - 0.00001,
-            lng: locationInit.longitude + 0.0005,
+            lat: locationInit.latitude,
+            lng: locationInit.longitude,
         });
         map.setZoom(locationInit.zoom);
 
@@ -151,7 +167,7 @@ export default function Index() {
     }, []);
 
     return (
-        <div className="hidden lg:block h-screen">
+        <div className="hidden lg:block h-screen overflow-hidden">
             <Head title="Replay" />
             <Toaster />
 

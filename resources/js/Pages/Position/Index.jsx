@@ -6,7 +6,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { map } from "@/Components/Map/Core/MapView";
 import MainMap from "@/Components/Map/MainMap";
 import DeviceList from "./Partials/DeviceList";
-import DeviceInfo from "./Partials/DeviceInfo";
+import SelectedDevice from "@/Components/Map/SelectedDevice";
 
 export default function Index({ auth }) {
     const { devices, locationInit } = usePage().props;
@@ -34,8 +34,8 @@ export default function Index({ auth }) {
 
         map.setZoom(19);
         map.setCenter(
-            value.position.latitude - 0.00001,
-            value.position.longitude + 0.0005
+            value.position.latitude ,
+            value.position.longitude 
         );
 
         setIsDeviceInfoOpen(true);
@@ -56,8 +56,8 @@ export default function Index({ auth }) {
 
     useEffect(() => {
         map.setCenter({
-            lat: locationInit.latitude - 0.0001,
-            lng: locationInit.longitude + 0.0005
+            lat: locationInit.latitude,
+            lng: locationInit.longitude,
         });
         map.setZoom(locationInit.zoom);
     }, []);
@@ -82,7 +82,7 @@ export default function Index({ auth }) {
         <AuthenticatedLayout user={auth.user}>
             <Head title="Tracking" />
 
-            <div className="relative h-screen-bg-gray-100">
+            <div className="relative h-screen bg-gray-100 overflow-hidden">
                 <MainMap
                     filteredPositions={positionData}
                     selectedDevice={deviceData}
@@ -90,7 +90,7 @@ export default function Index({ auth }) {
                 />
                 <DeviceList deviceData={deviceData} deviceClick={deviceClick} />
                 {isDeviceInfoOpen && (
-                    <DeviceInfo
+                    <SelectedDevice
                         device={deviceInfo}
                         setIsDeviceInfoOpen={setIsDeviceInfoOpen}
                     />
