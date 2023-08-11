@@ -29,15 +29,9 @@ export default function Authenticated({ user, header, children }) {
         <>
             <div className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-40 lg:w-20 xl:px-6 lg:bg-white lg:border-r-[1px] lg:pb-4 lg:flex lg:flex-col justify-between">
                 <nav className="mt-4 flex flex-col justify-between items-center">
-                    <div className="cursor-pointer duration-500 hover:rotate-[360deg]">
-                        <div className="relative">
-                            <div className="relative space-y-1 h-10 w-10 md:h-11 md:w-11">
-                                <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
+                    <Link href="/">
+                        <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800 duration-500 hover:rotate-[360deg]" />
+                    </Link>
                     <ul
                         role="list"
                         className="flex flex-col items-center space-y-1 mt-4"
