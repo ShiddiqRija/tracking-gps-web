@@ -15,7 +15,7 @@ class PositionCollection extends ResourceCollection
     public function toArray(Request $request)
     {
         return $this->collection->map(function ($item) {
-            $positionData = $item->positions;
+            $positionData = $item->position;
             if ($positionData == null) {
                 $positions = null;
             } else {

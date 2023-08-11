@@ -21,6 +21,7 @@ import FastRewindIcon from "@mui/icons-material/FastRewind";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import FastForwardIcon from "@mui/icons-material/FastForward";
+import SelectedDevice from "@/Components/Map/SelectedDevice";
 
 export default function Index() {
     const { devices, periods, locationInit } = usePage().props;
@@ -28,8 +29,10 @@ export default function Index() {
 
     const [isCustom, setIsCustom] = useState(false);
     const [isHistoryShow, setIsHistoryShow] = useState(false);
+    const [isDeviceInfoOpen, setIsDeviceInfoOpen] = useState(false);
 
     const [positions, setPositions] = useState([]);
+    const [device, setDevice] = useState([]);
     const [index, setIndex] = useState(0);
     const [playing, setPlaying] = useState(false);
 
@@ -37,6 +40,15 @@ export default function Index() {
         device_id: devices[0].id,
         from: moment().startOf("day").valueOf(),
         to: moment().endOf("day").valueOf(),
+    });
+
+    const [deviceInfo, setDeviceInfo] = useState({
+        name: "",
+        contact: "",
+        phone: "",
+        location: "",
+        lat: "",
+        lng: "",
     });
 
     const handlePeriod = (type) => {
@@ -65,12 +77,32 @@ export default function Index() {
         if (response.data.length > 1) {
             setIsHistoryShow(true);
             setIndex(0);
-            setPositions(response.data);
+            setPositions(
+                response.data.map((device) => ({
+                    name: device.name,
+                    latitude: device.position.latitude,
+                    longitude: device.position.longitude,
+                }))
+            );
+            setDevice(response.data);
 
             map.setZoom(20);
         } else {
             toast.error("No position data.");
         }
+    };
+
+    const deviceClick = (value) => {
+        setDeviceInfo({
+            name: value.name,
+            contact: value.contact && "-",
+            phone: value.phone && "-",
+            location: value.location,
+            lat: value.position.latitude,
+            lng: value.position.longitude,
+        });
+
+        setIsDeviceInfoOpen(true);
     };
 
     useEffect(() => {
@@ -119,9 +151,19 @@ export default function Index() {
                         onClick={onPointClick}
                     />
                     {index < positions.length && (
-                        <MapPositions positions={[positions[index]]} />
+                        <MapPositions
+                            positions={[positions[index]]}
+                            selectedDevice={[device[index]]}
+                            markerClick={deviceClick}
+                        />
                     )}
                 </MapView>
+                {isDeviceInfoOpen && (
+                    <SelectedDevice
+                        device={deviceInfo}
+                        setIsDeviceInfoOpen={setIsDeviceInfoOpen}
+                    />
+                )}
 
                 <div className="absolute w-96 top-2 left-2 z-10 bg-white rounded-lg shadow-md">
                     <div className="flex justify-between items-center px-4 py-2">

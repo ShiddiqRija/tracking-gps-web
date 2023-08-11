@@ -85,7 +85,8 @@ export default function Index({ auth }) {
             <div className="relative h-screen-bg-gray-100">
                 <MainMap
                     filteredPositions={positionData}
-                    deviceClick={deviceClick}
+                    selectedDevice={deviceData}
+                    markerClick={deviceClick}
                 />
                 <DeviceList deviceData={deviceData} deviceClick={deviceClick} />
                 {isDeviceInfoOpen && (

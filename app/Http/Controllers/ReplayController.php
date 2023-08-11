@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ReplayCollection;
 use App\Models\AppLocation;
 use App\Models\Device;
 use App\Models\Position;
@@ -27,10 +28,11 @@ class ReplayController extends Controller
 
     public function store(Request $request)
     {
-        $positionHistory = Position::where('device_id', $request->device_id)
+        $device = Position::with('device')
             ->whereBetween('device_time', [$request->from, $request->to])
+            ->where('device_id', $request->device_id)
             ->get();
 
-        return response()->json($positionHistory);
+        return response()->json(new ReplayCollection($device));
     }
 }

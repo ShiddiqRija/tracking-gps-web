@@ -1,12 +1,25 @@
 import { useEffect } from "react";
-import MapView from "./Core/MapView";
+import MapView, { map } from "./Core/MapView";
 import MapPositions from "./MapPositions";
 
-export default function MainMap({ filteredPositions }) {
+export default function MainMap({
+    filteredPositions,
+    selectedDevice,
+    markerClick,
+}) {
+    useEffect(() => {
+        map.removePolygons();
+        map.removePolylines();
+    }, []);
+
     return (
         <>
             <MapView>
-                <MapPositions positions={filteredPositions} />
+                <MapPositions
+                    positions={filteredPositions}
+                    selectedDevice={selectedDevice}
+                    markerClick={markerClick}
+                />
             </MapView>
         </>
     );

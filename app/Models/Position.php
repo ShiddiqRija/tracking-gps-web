@@ -23,4 +23,9 @@ class Position extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function device()
+    {
+        return $this->hasOne(Device::class, 'device_id', 'device_id');
+    }
 }
