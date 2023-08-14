@@ -71,7 +71,11 @@ export default function DeviceList({ deviceData, deviceClick }) {
                     {filteredDevices.map((device) => (
                         <li
                             key={device.id}
-                            onClick={() => deviceClick(device)}
+                            onClick={() => {
+                                if (device.position) {
+                                    deviceClick(device);
+                                }
+                            }}
                             className="px-4 py-2 border-y cursor-pointer hover:bg-gray-100"
                         >
                             <div className="flex justify-between">
