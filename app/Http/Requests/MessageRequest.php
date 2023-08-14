@@ -22,7 +22,7 @@ class MessageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'device_id'  => ['required', 'string'],
+            'device_id'  => ['required'],
             'message' => ['required', 'string', 'max:255'],
         ];
     }
