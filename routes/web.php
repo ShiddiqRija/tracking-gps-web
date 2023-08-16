@@ -6,6 +6,7 @@ use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReplayController;
 use App\Http\Controllers\Setting\AppLocationController;
+use App\Http\Controllers\Setting\UserController;
 use App\Http\Controllers\Setting\WifiController;
 use App\Http\Resources\PositionCollection;
 use App\Models\Device;
@@ -54,6 +55,8 @@ Route::prefix('settings')->group(function () {
         ->only(['index', 'store', 'edit', 'update', 'destroy']);
     Route::resource('location', AppLocationController::class)
         ->only(['index', 'update']);
+    Route::resource('user', UserController::class)
+        ->only(['index', 'store', 'edit', 'update', 'destroy']);
 })->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {

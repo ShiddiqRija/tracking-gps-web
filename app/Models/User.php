@@ -42,4 +42,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? null, function($query, $search) {
+            $query->where('name', 'like', "%{$search}%")
+            ->orWhere('email', 'like', "%{$search}%");
+        });
+    }
 }

@@ -29,6 +29,12 @@ export default function SettingIndex({ auth, title = "", children }) {
                         >
                             Wifi Location
                         </SettingNavLink>
+                        <SettingNavLink
+                            href={route("user.index")}
+                            active={route().current("user.index")}
+                        >
+                            User
+                        </SettingNavLink>
                     </ul>
                 </div>
 
