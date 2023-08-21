@@ -7,6 +7,7 @@ use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Inertia\Inertia;
@@ -29,13 +30,29 @@ class UserController extends Controller
 
             DB::beginTransaction();
 
-            User::create($validation);
+            $user = User::create($validation);
 
             DB::commit();
+
+            Log::info(
+                '[OK] Add User',
+                ['user' => [
+                    'id' => auth()->user()->id,
+                    'name' => auth()->user()->name
+                ], 'data' => $user]
+            );
 
             return Redirect::route('user.index');
         } catch (\Exception $err) {
             DB::rollBack();
+
+            Log::error(
+                '[FAILED] Add User',
+                ['user' => [
+                    'id' => auth()->user()->id,
+                    'name' => auth()->user()->name
+                ], 'error' => $err->getMessage()]
+            );
 
             return Redirect::back()->withErrors(['error' => $err->getMessage()]);
         }
@@ -62,9 +79,25 @@ class UserController extends Controller
 
             DB::commit();
 
+            Log::info(
+                '[OK] Edit User',
+                ['user' => [
+                    'id' => auth()->user()->id,
+                    'name' => auth()->user()->name
+                ], 'data' => $user]
+            );
+
             return Redirect::route('user.index');
         } catch (\Exception $err) {
             DB::rollBack();
+
+            Log::error(
+                '[FAILED] Edit User',
+                ['user' => [
+                    'id' => auth()->user()->id,
+                    'name' => auth()->user()->name
+                ], 'error' => $err->getMessage()]
+            );
 
             return Redirect::back()->withErrors(['error' => $err->getMessage()]);
         }
@@ -79,9 +112,15 @@ class UserController extends Controller
 
             DB::commit();
 
+            Log::info('User Deleted Successfully');
+            Log::info($user);
+
             return Redirect::route('user.index');
         } catch (\Exception $err) {
             DB::rollBack();
+
+            Log::info('Delete User Failed');
+            Log::info($err->getMessage());
 
             return Redirect::back()->withErrors(['error' => $err->getMessage()]);
         }

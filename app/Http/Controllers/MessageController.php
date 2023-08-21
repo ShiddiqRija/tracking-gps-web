@@ -7,6 +7,7 @@ use App\Models\Device;
 use App\Models\Message;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 // use Illuminate\Http\Request;
@@ -37,15 +38,31 @@ class MessageController extends Controller
 
             if ($status == 200 || $status == 202) {
                 DB::beginTransaction();
-        
-                Message::create($validation);
-        
+
+                $message = Message::create($validation);
+
                 DB::commit();
-        
+
+                Log::info(
+                    '[OK] Send Message',
+                    ['user' => [
+                        'id' => auth()->user()->id,
+                        'name' => auth()->user()->name
+                    ], 'data' => $message]
+                );
+
                 return Redirect::route('messages.index');
             }
         } catch (\Exception $err) {
             DB::rollBack();
+
+            Log::error(
+                '[FAILED] Send Message',
+                ['user' => [
+                    'id' => auth()->user()->id,
+                    'name' => auth()->user()->name
+                ], 'error' => $err->getMessage()]
+            );
 
             return Redirect::back()->withErrors(['error' => $err->getMessage()]);
         }

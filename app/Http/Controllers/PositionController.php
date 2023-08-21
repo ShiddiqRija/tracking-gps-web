@@ -10,6 +10,7 @@ use App\Models\Position;
 use App\Models\Wifi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class PositionController extends Controller
@@ -71,6 +72,14 @@ class PositionController extends Controller
 
                 DB::commit();
 
+                Log::info(
+                    '[OK] Add New Position',
+                    ['data' => [
+                        'position' => $position,
+                        'device' => $device
+                    ]]
+                );
+
                 $devices = Device::all();
 
                 broadcast(new PositionUpdateEvent(new PositionCollection($devices)));
@@ -82,6 +91,11 @@ class PositionController extends Controller
                 ]);
             } catch (\Exception $err) {
                 DB::rollBack();
+
+                Log::error(
+                    '[FAILED] Add New Position',
+                    ['error' => $err->getMessage()]
+                );
 
                 return response()->json([
                     'success' => false,

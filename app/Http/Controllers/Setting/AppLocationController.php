@@ -7,6 +7,7 @@ use App\Http\Requests\AppLocationRequest;
 use App\Models\AppLocation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -30,9 +31,25 @@ class AppLocationController extends Controller
 
             DB::commit();
 
+            Log::info(
+                '[OK] Edit User',
+                ['user' => [
+                    'id' => auth()->user()->id,
+                    'name' => auth()->user()->name
+                ], 'data' => $location]
+            );
+
             return Redirect::route('location.index');
         } catch (\Exception $err) {
             DB::rollBack();
+
+            Log::error(
+                '[FAILED] Edit Location',
+                ['user' => [
+                    'id' => auth()->user()->id,
+                    'name' => auth()->user()->name
+                ], 'error' => $err->getMessage()]
+            );
 
             return Redirect::back()->withErrors(['error' => $err->getMessage()]);
         }

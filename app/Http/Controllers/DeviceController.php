@@ -7,6 +7,7 @@ use App\Models\Device;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
@@ -34,23 +35,37 @@ class DeviceController extends Controller
 
             $validation['device_id']    = json_decode($storeToServer->getBody()->getContents())->id;
             $status                     = json_decode($storeToServer->getStatusCode());
-            
+
             if ($status == 200) {
                 DB::beginTransaction();
-        
-                Device::create($validation);
-        
+
+                $device = Device::create($validation);
+
                 DB::commit();
+
+                Log::info(
+                    '[OK] Add Device',
+                    ['user' => [
+                        'id' => auth()->user()->id,
+                        'name' => auth()->user()->name
+                    ], 'data' => $device]
+                );
             }
 
             return Redirect::route('devices.index');
         } catch (\Exception $err) {
             DB::rollBack();
 
+            Log::error(
+                '[FAILED] Add Device',
+                ['user' => [
+                    'id' => auth()->user()->id,
+                    'name' => auth()->user()->name
+                ], 'error' => $err->getMessage()]
+            );
+
             return Redirect::back()->withErrors(['error' => $err->getMessage()]);
         }
-
-
     }
 
     public function edit(Device $device)
@@ -66,15 +81,31 @@ class DeviceController extends Controller
 
             if ($status == 200) {
                 DB::beginTransaction();
-        
+
                 $device->update($request->all());
-        
+
                 DB::commit();
-        
+
+                Log::info(
+                    '[OK] Edit Device',
+                    ['user' => [
+                        'id' => auth()->user()->id,
+                        'name' => auth()->user()->name
+                    ], 'data' => $device]
+                );
+
                 return Redirect::route('devices.index');
             }
         } catch (\Exception $err) {
             DB::rollBack();
+
+            Log::error(
+                '[FAILED] Edit Device',
+                ['user' => [
+                    'id' => auth()->user()->id,
+                    'name' => auth()->user()->name
+                ], 'error' => $err->getMessage()]
+            );
 
             return Redirect::back()->withErrors(['error' => $err->getMessage()]);
         }
@@ -88,19 +119,34 @@ class DeviceController extends Controller
 
             if ($status == 204) {
                 DB::beginTransaction();
-        
+
                 $device->delete();
-        
+
                 DB::commit();
-                
+
+                Log::info(
+                    '[OK] Delete Device',
+                    ['user' => [
+                        'id' => auth()->user()->id,
+                        'name' => auth()->user()->name
+                    ], 'data' => $device]
+                );
+
                 return Redirect::route('devices.index');
             }
         } catch (\Exception $err) {
             DB::rollBack();
 
+            Log::error(
+                '[FAILED] Delete Device',
+                ['user' => [
+                    'id' => auth()->user()->id,
+                    'name' => auth()->user()->name
+                ], 'data' => $err->getMessage()]
+            );
+
             return Redirect::back()->withErrors(['error' => $err->getMessage()]);
         }
-
     }
 
     public function status(HttpRequest $request)

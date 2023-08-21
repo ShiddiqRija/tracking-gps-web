@@ -7,6 +7,7 @@ use App\Http\Requests\WifiRequest;
 use App\Models\Wifi;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
@@ -29,13 +30,29 @@ class WifiController extends Controller
 
             DB::beginTransaction();
 
-            Wifi::create($validation);
+            $wifi = Wifi::create($validation);
 
             DB::commit();
+
+            Log::info(
+                '[OK] Add Wifi/Location',
+                ['user' => [
+                    'id' => auth()->user()->id,
+                    'name' => auth()->user()->name
+                ], 'data' => $wifi]
+            );
 
             return Redirect::route('wifi.index');
         } catch (\Exception $err) {
             DB::rollBack();
+
+            Log::error(
+                '[FAILED] Add Wifi/Location',
+                ['user' => [
+                    'id' => auth()->user()->id,
+                    'name' => auth()->user()->name
+                ], 'error' => $err->getMessage()]
+            );
 
             return Redirect::back()->withErrors(['error' => $err->getMessage()]);
         }
@@ -55,9 +72,25 @@ class WifiController extends Controller
 
             DB::commit();
 
+            Log::info(
+                '[OK] Edit Wifi/Location',
+                ['user' => [
+                    'id' => auth()->user()->id,
+                    'name' => auth()->user()->name
+                ], 'data' => $wifi]
+            );
+
             return Redirect::route('wifi.index');
         } catch (\Exception $err) {
             DB::rollBack();
+
+            Log::error(
+                '[FAILED] Edit Wifi/Location',
+                ['user' => [
+                    'id' => auth()->user()->id,
+                    'name' => auth()->user()->name
+                ], 'error' => $err->getMessage()]
+            );
 
             return Redirect::back()->withErrors(['error' => $err->getMessage()]);
         }
@@ -72,9 +105,25 @@ class WifiController extends Controller
 
             DB::commit();
 
+            Log::info(
+                '[OK] Delete Wifi/Location',
+                ['user' => [
+                    'id' => auth()->user()->id,
+                    'name' => auth()->user()->name
+                ], 'data' => $wifi]
+            );
+
             return Redirect::route('wifi.index');
-        } catch(\Exception $err) {
+        } catch (\Exception $err) {
             DB::rollBack();
+
+            Log::error(
+                '[FAILED] Delete Wifi/Location',
+                ['user' => [
+                    'id' => auth()->user()->id,
+                    'name' => auth()->user()->name
+                ], 'error' => $err->getMessage()]
+            );
 
             return Redirect::back()->withErrors(['error' => $err->getMessage()]);
         }
