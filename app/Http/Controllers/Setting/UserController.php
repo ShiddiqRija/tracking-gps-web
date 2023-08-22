@@ -113,7 +113,7 @@ class UserController extends Controller
             DB::commit();
 
             Log::info(
-                '[OK] Edit User',
+                '[OK] Delete User',
                 ['user' => [
                     'id' => auth()->user()->id,
                     'name' => auth()->user()->name
@@ -125,7 +125,7 @@ class UserController extends Controller
             DB::rollBack();
 
             Log::error(
-                '[FAILED] Edit User',
+                '[FAILED] Delete User',
                 ['user' => [
                     'id' => auth()->user()->id,
                     'name' => auth()->user()->name
