@@ -112,15 +112,25 @@ class UserController extends Controller
 
             DB::commit();
 
-            Log::info('User Deleted Successfully');
-            Log::info($user);
+            Log::info(
+                '[OK] Edit User',
+                ['user' => [
+                    'id' => auth()->user()->id,
+                    'name' => auth()->user()->name
+                ], 'data' => $user]
+            );
 
             return Redirect::route('user.index');
         } catch (\Exception $err) {
             DB::rollBack();
 
-            Log::info('Delete User Failed');
-            Log::info($err->getMessage());
+            Log::error(
+                '[FAILED] Edit User',
+                ['user' => [
+                    'id' => auth()->user()->id,
+                    'name' => auth()->user()->name
+                ], 'error' => $err->getMessage()]
+            );
 
             return Redirect::back()->withErrors(['error' => $err->getMessage()]);
         }
