@@ -67,7 +67,7 @@ export default function MessageTable({ messages, classname = "" }) {
                                 {message.message}
                             </td>
                             <td className="px-4 py-2 text-sm text-gray-500 whitespace-nowrap">
-                                {message.send_time}
+                                {new Date(message.send_time).toLocaleString()}
                             </td>
                             <td className="px-4 py-2 text-sm text-gray-500 whitespace-nowrap">
                                 {message.user.name}
