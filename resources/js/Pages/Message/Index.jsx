@@ -15,6 +15,8 @@ export default function Index({ auth }) {
     const [modalTitle, setModalTitle] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    console.log(messages);
+
     const { data, setData, post, processing, errors, reset } = useForm({
         device_id: devices[0].id,
         message: "",

@@ -20,14 +20,28 @@ class Message extends Model
         'updated_at',
     ];
 
+    public function device()
+    {
+        return $this->hasOne(Device::class, 'device_id', 'device_id');
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'created_by');
+    }
+
     public function scopeFilter($query, array $filters)
     {
-        $query->when($filters['search'] ?? null, function($query, $search) {
-            $query->where('name', 'like', "%{$search}%")
+        $query->when($filters['search'] ?? null, function ($query, $search) {
+            $query->whereHas('device', function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%");
+            })
             ->orWhere('unique_id', 'like', "%{$search}%")
             ->orWhere('message', 'like', "%{$search}%")
             ->orWhere('send_time', 'like', "%{$search}%")
-            ->orWhere('sender', 'like', "%{$search}%");
+            ->orWhereHas('user', function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%");
+            });
         });
     }
 }

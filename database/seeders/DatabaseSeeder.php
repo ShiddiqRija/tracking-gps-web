@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\AppLocation;
 use App\Models\Device;
+use App\Models\Message;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -23,18 +24,20 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        User::create([
-            'name'      => 'Administrator',
-            'email'     => 'admin@tracking.com',
-            'password'  => bcrypt('password')
-        ]);
+        // User::create([
+        //     'name'      => 'Administrator',
+        //     'email'     => 'admin@tracking.com',
+        //     'password'  => bcrypt('password')
+        // ]);
 
-        AppLocation::create([
-            'latitude' => 0.0,
-            'longitude' => 0.0,
-            'zoom' => 0
-        ]);
+        // AppLocation::create([
+        //     'latitude' => 0.0,
+        //     'longitude' => 0.0,
+        //     'zoom' => 0
+        // ]);
 
         // Device::factory(50)->create();
+
+        Message::factory(20)->create();
     }
 }

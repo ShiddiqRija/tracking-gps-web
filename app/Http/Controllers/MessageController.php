@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MessageRequest;
+use App\Http\Resources\MessageCollection;
 use App\Models\Device;
 use App\Models\Message;
 use GuzzleHttp\Client;
@@ -21,6 +22,12 @@ class MessageController extends Controller
             'devices' => Device::all(),
             'messages' => Message::query()
                 ->filter(Request::only('search'))
+                ->with(['device' => function ($query) {
+                    $query->select('device_id', 'name');
+                }])
+                ->with(['user' => function ($query) {
+                    $query->select('id', 'name');
+                }])
                 ->paginate(10)
         ]);
     }

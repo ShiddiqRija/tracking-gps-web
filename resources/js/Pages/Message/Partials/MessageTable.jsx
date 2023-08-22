@@ -58,7 +58,7 @@ export default function MessageTable({ messages, classname = "" }) {
                                 {message.id}
                             </td>
                             <td className="px-4 py-2 text-sm text-gray-500 whitespace-nowrap">
-                                {message.device_id}
+                                {message.device.name}
                             </td>
                             <td className="px-4 py-2 text-sm text-gray-500 whitespace-nowrap">
                                 {message.unique_id}
@@ -70,7 +70,7 @@ export default function MessageTable({ messages, classname = "" }) {
                                 {message.send_time}
                             </td>
                             <td className="px-4 py-2 text-sm text-gray-500 whitespace-nowrap">
-                                {message.sender}
+                                {message.user.name}
                             </td>
                         </tr>
                     ))}
