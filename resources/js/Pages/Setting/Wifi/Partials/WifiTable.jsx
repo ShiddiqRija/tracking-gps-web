@@ -1,12 +1,20 @@
-import {router} from "@inertiajs/react"
+import { router } from "@inertiajs/react";
 
 import TextInput from "@/Components/Atom/TextInput";
 
 import AutoFixHighOutlinedIcon from "@mui/icons-material/AutoFixHighOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { Pagination } from "@mui/material";
+import RemoveDialog from "@/Components/RemoveDialog";
+import { useState } from "react";
 
 export default function WifiTable({ wifis, updateWifi, classname = "" }) {
+    const [removing, setRemoving] = useState(null);
+
+    const handleRemoveResult = () => {
+        setRemoving(null);
+    };
+
     return (
         <div className="block w-full bg-white rounded-t-lg px-4 py-4">
             <div className="flex justify-end">
@@ -70,6 +78,7 @@ export default function WifiTable({ wifis, updateWifi, classname = "" }) {
                                 <button
                                     type="button"
                                     className="text-rose-600 text-opacity-50 hover:text-opacity-100 cursor-pointer "
+                                    onClick={() => setRemoving(wifi.id)}
                                 >
                                     <DeleteOutlinedIcon />
                                 </button>
@@ -105,6 +114,13 @@ export default function WifiTable({ wifis, updateWifi, classname = "" }) {
                     }}
                 />
             </div>
+
+            <RemoveDialog
+                open={!!removing}
+                endpoint="wifi.destroy"
+                itemId={removing ? removing : null}
+                onResult={handleRemoveResult}
+            />
         </div>
     );
 }

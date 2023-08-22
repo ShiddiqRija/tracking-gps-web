@@ -51,11 +51,7 @@ export default function Index({ auth }) {
                     isEdit={isEdit}
                 />
 
-                <UserTable
-                    users={users}
-                    editUser={editUser}
-                    isEdit={setIsEdit}
-                />
+                <UserTable users={users} editUser={editUser} />
             </div>
         </SettingIndex>
     );

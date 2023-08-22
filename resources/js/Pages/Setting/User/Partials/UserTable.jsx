@@ -3,8 +3,16 @@ import TextInput from "@/Components/Atom/TextInput";
 import AutoFixHighOutlinedIcon from "@mui/icons-material/AutoFixHighOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { Pagination } from "@mui/material";
+import RemoveDialog from "@/Components/RemoveDialog";
+import { useState } from "react";
 
 export default function UserTable({ users, editUser, classname = "" }) {
+    const [removing, setRemoving] = useState(null);
+
+    const handleRemoveResult = () => {
+        setRemoving(null);
+    };
+
     return (
         <div className="block w-full bg-white rounded-t-lg px-4 py-4">
             <div className="flex justify-end">
@@ -68,6 +76,7 @@ export default function UserTable({ users, editUser, classname = "" }) {
                                 <button
                                     type="button"
                                     className="text-rose-600 text-opacity-50 hover:text-opacity-100 cursor-pointer "
+                                    onClick={() => setRemoving(user.id)}
                                 >
                                     <DeleteOutlinedIcon />
                                 </button>
@@ -103,6 +112,13 @@ export default function UserTable({ users, editUser, classname = "" }) {
                     }}
                 />
             </div>
+
+            <RemoveDialog
+                open={!!removing}
+                endpoint="user.destroy"
+                itemId={removing ? removing : null}
+                onResult={handleRemoveResult}
+            />
         </div>
     );
 }

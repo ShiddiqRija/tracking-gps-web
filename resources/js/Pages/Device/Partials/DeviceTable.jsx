@@ -5,8 +5,16 @@ import TextInput from "@/Components/Atom/TextInput";
 import { Pagination } from "@mui/material";
 import AutoFixHighOutlinedIcon from "@mui/icons-material/AutoFixHighOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import RemoveDialog from "@/Components/RemoveDialog";
+import { useState } from "react";
 
 export default function DeviceTable({ devices, updateDevice, className = "" }) {
+    const [removing, setRemoving] = useState(null);
+
+    const handleRemoveResult = () => {
+        setRemoving(null);
+    };
+
     return (
         <div className="block w-full bg-white rounded-t-lg px-4 py-4">
             <div className="flex justify-end">
@@ -144,6 +152,7 @@ export default function DeviceTable({ devices, updateDevice, className = "" }) {
                                 <button
                                     type="button"
                                     className="text-rose-600 text-opacity-50 hover:text-opacity-100 cursor-pointer "
+                                    onClick={() => setRemoving(device.id)}
                                 >
                                     <DeleteOutlinedIcon />
                                 </button>
@@ -179,6 +188,13 @@ export default function DeviceTable({ devices, updateDevice, className = "" }) {
                     }}
                 />
             </div>
+
+            <RemoveDialog
+                open={!!removing}
+                endpoint="devices.destroy"
+                itemId={removing ? removing : null}
+                onResult={handleRemoveResult}
+            />
         </div>
     );
 }

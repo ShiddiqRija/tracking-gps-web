@@ -52,12 +52,15 @@ Route::resource('messages', MessageController::class)
 
 Route::prefix('settings')->group(function () {
     Route::resource('wifi', WifiController::class)
-        ->only(['index', 'store', 'edit', 'update', 'destroy']);
+        ->only(['index', 'store', 'edit', 'update', 'destroy'])
+        ->middleware(['auth', 'verified']);
     Route::resource('location', AppLocationController::class)
-        ->only(['index', 'update']);
+        ->only(['index', 'update'])
+        ->middleware(['auth', 'verified']);
     Route::resource('user', UserController::class)
-        ->only(['index', 'store', 'edit', 'update', 'destroy']);
-})->middleware(['auth', 'verified']);
+        ->only(['index', 'store', 'edit', 'update', 'destroy'])
+        ->middleware(['auth', 'verified']);
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
