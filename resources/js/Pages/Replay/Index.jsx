@@ -332,9 +332,9 @@ export default function Index() {
                             />
 
                             <div className="flex space-x-5 justify-center items-center">
-                                <p>
+                                <div className="text-sm">
                                     {index + 1}/{positions.length}
-                                </p>
+                                </div>
                                 <div className="flex">
                                     <IconButton
                                         onClick={() =>
@@ -366,7 +366,7 @@ export default function Index() {
                                         <FastForwardIcon />
                                     </IconButton>
                                 </div>
-                                <div>
+                                <div className="text-sm">
                                     {moment(
                                         positions[index].device_time
                                     ).format("YYYY-MM-DD HH:mm:ss")}
