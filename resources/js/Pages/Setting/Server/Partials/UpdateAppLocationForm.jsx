@@ -4,9 +4,14 @@ import InputLabel from "@/Components/Atom/InputLabel";
 import TextInput from "@/Components/Atom/TextInput";
 import { Transition } from "@headlessui/react";
 import { useForm, usePage } from "@inertiajs/react";
+import { useEffect } from "react";
 import { toast } from "react-hot-toast";
 
-export default function UpdateAppLocation({ className = "" }) {
+export default function UpdateAppLocation({
+    mapCenter,
+    mapZoom,
+    className = "",
+}) {
     const location = usePage().props.location;
 
     const { data, setData, put, errors, processing, recentlySuccessful } =
@@ -29,6 +34,22 @@ export default function UpdateAppLocation({ className = "" }) {
             onError: () => toast.error("Could not update."),
         });
     };
+
+    useEffect(() => {
+        if (mapZoom) {
+            setData("zoom", mapZoom);
+        }
+    }, [mapZoom]);
+
+    useEffect(() => {
+        if (mapCenter) {
+            setData({
+                ...data,
+                latitude: mapCenter.lat.toFixed(10),
+                longitude: mapCenter.lng.toFixed(10),
+            });
+        }
+    }, [mapCenter]);
 
     return (
         <section className={className}>

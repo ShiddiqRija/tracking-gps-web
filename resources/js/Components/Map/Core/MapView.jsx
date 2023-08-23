@@ -41,7 +41,7 @@ export default function MapView({ children }) {
     }, [containerEl]);
 
     return (
-        <div className="relative w-full h-screen" ref={containerEl}>
+        <div className="relative w-full h-full" ref={containerEl}>
             {children}
         </div>
     );
