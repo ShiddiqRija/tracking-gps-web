@@ -319,7 +319,7 @@ export default function Index() {
                 {isHistoryShow && (
                     <div className="absolute w-96 top-20 left-2 z-10 bg-white rounded-lg shadow-md">
                         <div className="p-4 space-y-0">
-                            <h1 className="text-lg text-center">Device Name</h1>
+                            <h1 className="text-lg text-center">{positions[index].name}</h1>
 
                             <Slider
                                 max={positions.length - 1}
